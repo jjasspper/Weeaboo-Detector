@@ -1,11 +1,11 @@
 {
-  "name": "Weeaboo Detector",
-  "version": "0.0.1",
-  "description": "Detects weeaboos and gives them a punishment.",
-  "main": "index.js",
-  "author": "jjasspper",
-  "license": "ISC",
-  "dependencies": {
-    "discord.js": "^11.3.2"
-  }
+	"name": "Weeaboo-Detector",
+	"version": "0.0.1",
+	"description": "Detects weeaboos and gives them a punishment.",
+	"main": "index.js",
+	"author": "jjasspper",
+	"license": "ISC",
+	"dependencies": {
+		"discord.js": "^11.3.2"
+	}
 }

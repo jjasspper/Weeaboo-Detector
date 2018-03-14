@@ -1,11 +1,24 @@
 "use strict";
 
 const Discord = require("discord.js");
-const Token = "NDIzMTMwNzY1MDkwMzU3MjQ4.DYl9Tw.zq0nmy7R-doyNjQM912PHesKWa4";
+const config = require("./config.json");
 
 let client = new Discord.Client();
-let words = [
-	'weeab',
+
+/**
+ * Contains bot info
+ * @type {{version: string, blockedWords: *}}
+ */
+let info = {
+	version: "0.0.1",
+	blockedWords: this.words
+};
+
+/**
+ * Array containing blocked words
+ * @type {string[]}
+ */
+let blockedWords = [
 	'kawai',
 	'desu',
 	'nani',
@@ -13,16 +26,34 @@ let words = [
 	'nya',
 	'chan',
 	'genji',
-	'naruto'
+	'naruto',
 ];
 
-client.on("ready", function () {
-	console.log("------------------------------------------------------------");
+/**
+ * Object containing watched users
+ * @type {{users: Array}}
+ */
+let watchList = {
+	users: [],
+};
+
+/**
+ * Adds a trigger word to the words list
+ * @param word
+ */
+
+function addTriggerWord(word) {
+	blockedWords.push(word);
+}
+
+client.on("ready", () => {
+	console.log("--------------------------------------------------------------");
 	console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
-	console.log("------------------------------------------------------------");
+	console.log("--------------------------------------------------------------");
+	client.user.setActivity("on weeabs");
 });
 
-client.on("message", function (message) {
+client.on("message", message => {
 
 	if (message.author.equals(client.user)) return;
 
@@ -31,24 +62,38 @@ client.on("message", function (message) {
 
 	console.log(content);
 
-	for (let i = 0; i < words.length; i++) {
-		if (content.includes(words[i])) {
-			message.channel.send("Mogelijke weeaboo detected. User: " + sender + " is op de watchlist gezet!");
+	/**
+	 * Checks if a word in the message matches a word in the words object
+	 */
+
+	for (let i = 0; i < blockedWords.length; i++) {
+		if (content.includes(blockedWords[i])) {
+			message.channel.send("Possible weeaboo detected. User: " + sender + " has been put on the watchlist!");
 		}
 	}
 
+	/**
+	 * Logic for the !weeabot command
+	 */
+
+	if (content.includes("!weeabot")) {
+		message.channel.send("At your service.");
+	}
+
+	// Random shit
+
 	if (content.includes("p!info") || content.includes("p!pokemon")) {
 		setTimeout(function () {
-			message.channel.send("Die pokemon is vet cool " + sender + "!");
+			message.channel.send("That is one one cool lookin' pokemon " + sender + "!");
 		}, 1000);
 	}
 
 	if (content.includes("fuck")) {
-		message.channel.send("Niet schelden " + sender + "!");
+		message.channel.send("Don't swear " + sender + "!");
 	}
 
 	if (content.includes("kanker")) {
-		message.channel.send("Niet schelden " + sender + "!");
+		message.channel.send("Dont't swear " + sender + "!");
 	}
 
 	if (content.includes("kasper")) {
@@ -57,5 +102,5 @@ client.on("message", function (message) {
 
 });
 
-client.login(Token);
+client.login(config.token);
 
