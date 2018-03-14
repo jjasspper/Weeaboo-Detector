@@ -1,23 +1,16 @@
 "use strict";
 
+const appInfo = require("./package");
 const Discord = require("discord.js");
 const config = require("./config.json");
 
 let client = new Discord.Client();
 
 /**
- * Contains bot info
- * @type {{version: string, blockedWords: *}}
- */
-let info = {
-	version: "0.0.1",
-	blockedWords: this.words
-};
-
-/**
  * Array containing blocked words
  * @type {string[]}
  */
+
 let blockedWords = [
 	'kawai',
 	'desu',
@@ -30,9 +23,19 @@ let blockedWords = [
 ];
 
 /**
+ * Contains bot info
+ * @type {{version: string, blockedWords: string[]}}
+ */
+let info = {
+	version: "0.0.1",
+	blockedWords: blockedWords
+};
+
+/**
  * Object containing watched users
  * @type {{users: Array}}
  */
+
 let watchList = {
 	users: [],
 };
@@ -44,6 +47,16 @@ let watchList = {
 
 function addTriggerWord(word) {
 	blockedWords.push(word);
+}
+
+/**
+ * Sends message to current channel
+ * @param message
+ * @param channel
+ */
+
+function sendMessageToChannel(message, channel) {
+	channel.send(message);
 }
 
 client.on("ready", () => {
@@ -77,7 +90,20 @@ client.on("message", message => {
 	 */
 
 	if (content.includes("!weeabot")) {
-		message.channel.send("At your service.");
+		let allWordsInMessage = message.content.split(" ");
+		let firstParam = allWordsInMessage[1];
+
+		switch (true) {
+			case firstParam === "info":
+				sendMessageToChannel("Version: " + appInfo.version, message.channel);
+				break;
+
+			default:
+				sendMessageToChannel("At your service.", message.channel);
+				break;
+		}
+
+		console.log(firstParam);
 	}
 
 	// Random shit
