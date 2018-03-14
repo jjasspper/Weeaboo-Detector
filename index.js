@@ -2,7 +2,7 @@
 
 const appInfo = require("./package");
 const Discord = require("discord.js");
-const config = require("./config.json");
+const config = require("./config");
 
 let client = new Discord.Client();
 
@@ -157,8 +157,7 @@ client.on("message", message => {
 		}
 	}
 
-
 });
 
-client.login(config.token);
+client.login(process.env.BOT_TOKEN);
 
