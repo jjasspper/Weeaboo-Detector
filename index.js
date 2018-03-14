@@ -2,7 +2,6 @@
 
 const appInfo = require("./package");
 const Discord = require("discord.js");
-const config = require("./config");
 
 let client = new Discord.Client();
 
