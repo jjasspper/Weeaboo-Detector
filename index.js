@@ -2,7 +2,7 @@
 
 const appInfo = require("./package");
 const Discord = require("discord.js");
-const config = require("./config.json");
+const config = require("./config");
 
 let client = new Discord.Client();
 
@@ -72,18 +72,9 @@ client.on("message", message => {
 
 	let sender = message.author;
 	let content = message.content.toLowerCase();
+	let channel = message.channel;
 
 	console.log(content);
-
-	/**
-	 * Checks if a word in the message matches a word in the words object
-	 */
-
-	for (let i = 0; i < blockedWords.length; i++) {
-		if (content.includes(blockedWords[i])) {
-			message.channel.send("Possible weeaboo detected. User: " + sender + " has been put on the watchlist!");
-		}
-	}
 
 	/**
 	 * Logic for the !weeabot command
@@ -92,18 +83,48 @@ client.on("message", message => {
 	if (content.includes("!weeabot")) {
 		let allWordsInMessage = message.content.split(" ");
 		let firstParam = allWordsInMessage[1];
+		let secondParam = allWordsInMessage[2];
 
 		switch (true) {
 			case firstParam === "info":
-				sendMessageToChannel("Version: " + appInfo.version, message.channel);
+				sendMessageToChannel("Version: " + appInfo.version, channel);
+				break;
+			case firstParam === "add":
+				if (secondParam === "word") {
+					let word = allWordsInMessage[3];
+					addTriggerWord(word);
+					sendMessageToChannel("Word: '" + word + "' has been added to the list.", channel);
+					console.log(blockedWords);
+				}
+				break;
+			case firstParam === "remove":
+				if (secondParam === "word") {
+					let word = allWordsInMessage[3];
+					let index = blockedWords.indexOf(word);
+
+					console.log(word);
+					console.log(index);
+
+					if (index === -1) {
+						sendMessageToChannel("Word: '" + word + "' not found in the list.", channel);
+						console.log(blockedWords);
+						break;
+					} else {
+						console.log(index);
+						blockedWords.splice(index, 1);
+						sendMessageToChannel("Word: '" + word + "' has been removed from the list.", channel);
+						console.log(blockedWords);
+						break;
+					}
+				}
 				break;
 
 			default:
-				sendMessageToChannel("At your service.", message.channel);
+				sendMessageToChannel("At your service.", channel);
 				break;
 		}
 
-		console.log(firstParam);
+		return;
 	}
 
 	// Random shit
@@ -115,18 +136,28 @@ client.on("message", message => {
 	}
 
 	if (content.includes("fuck")) {
-		message.channel.send("Don't swear " + sender + "!");
+		sendMessageToChannel("Don't swear " + sender + "!", channel);
 	}
 
 	if (content.includes("kanker")) {
-		message.channel.send("Dont't swear " + sender + "!");
+		sendMessageToChannel("Dont't swear " + sender + "!", channel);
 	}
 
 	if (content.includes("kasper")) {
-		message.channel.send(sender + " spoel je mond met zeep, stuk schijt!");
+		sendMessageToChannel(sender + " spoel je mond met zeep, stuk schijt!", channel);
+	}
+
+	/**
+	 * Checks if a word in the message matches a word in the words object
+	 */
+
+	for (let i = 0; i < blockedWords.length; i++) {
+		if (content.includes(blockedWords[i])) {
+			sendMessageToChannel("Possible weeaboo detected. User: " + sender + " has been put on the watchlist!", channel);
+		}
 	}
 
 });
 
-client.login(config.token);
+client.login(process.env.BOT_TOKEN);
 
