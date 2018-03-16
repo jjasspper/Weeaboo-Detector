@@ -26,7 +26,7 @@ let blockedWords = [
  * @type {{version: string, blockedWords: string[]}}
  */
 let info = {
-	version: "0.0.1",
+	version: appInfo.version,
 	blockedWords: blockedWords
 };
 
@@ -63,6 +63,8 @@ client.on("ready", () => {
 	console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
 	console.log("--------------------------------------------------------------");
 	client.user.setActivity("on weeabs");
+	client.user.setUsername("Weeabo Detector")
+
 });
 
 client.on("message", message => {
