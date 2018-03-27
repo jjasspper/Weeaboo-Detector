@@ -93,7 +93,7 @@ client.on("message", message => {
 				sendMessageToChannel({
 					embed: {
 						tile: "Weeabot info",
-						color: a142f4,
+						color: 3447003,
 						fields: [
 							{
 								name: "Commands:",
