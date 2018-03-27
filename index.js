@@ -19,6 +19,7 @@ let blockedWords = [
 	'chan',
 	'genji',
 	'naruto',
+	'kirito',
 	'omae',
 	'shindeiru'
 ];
@@ -66,7 +67,6 @@ client.on("ready", () => {
 	console.log("--------------------------------------------------------------");
 	client.user.setActivity("on weeabs");
 	client.user.setUsername("Weeabo Detector")
-
 });
 
 client.on("message", message => {
@@ -90,7 +90,26 @@ client.on("message", message => {
 
 		switch (true) {
 			case firstParam === "info":
-				sendMessageToChannel("Version: " + appInfo.version, channel);
+				sendMessageToChannel({
+					embed: {
+						tile: "Weeabot info",
+						color: a142f4,
+						fields: [
+							{
+								name: "Commands:",
+								value: "!weeabot {command}"
+							},
+							{
+								name: "Your server:",
+								value: client.guild.name + " id: " + client.guild.id
+							}
+						],
+						footer: {
+							icon_url: client.user.avatarURL,
+							text: "© JVH 2018"
+						}
+					}
+				});
 				break;
 			case firstParam === "add":
 				if (secondParam === "word") {
@@ -123,7 +142,7 @@ client.on("message", message => {
 				break;
 
 			default:
-				sendMessageToChannel("At your service.", channel);
+				sendMessageToChannel("Command not found, use '!weeabot info' to list all commands.", channel);
 				break;
 		}
 
@@ -132,18 +151,14 @@ client.on("message", message => {
 
 	// Random shit
 
-	if (content.includes("p!info") || content.includes("p!pokemon")) {
+	if (content.includes("p!pokemon")) {
 		setTimeout(function () {
 			message.channel.send("That is one one cool lookin' pokemon " + sender + "!");
 		}, 1000);
 	}
 
-	if (content.includes("fuck")) {
+	if (content.includes("fuck") || content.includes("kanker")) {
 		sendMessageToChannel("Don't swear " + sender + "!", channel);
-	}
-
-	if (content.includes("kanker")) {
-		sendMessageToChannel("Dont't swear " + sender + "!", channel);
 	}
 
 	if (content.includes("kasper")) {
