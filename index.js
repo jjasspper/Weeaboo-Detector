@@ -89,7 +89,7 @@ client.on("message", message => {
 		let secondParam = allWordsInMessage[2];
 
 		switch (true) {
-			case firstParam === "info":
+			/*case firstParam === "info":
 				sendMessageToChannel({
 					embed: {
 						tile: "Weeabot info",
@@ -110,7 +110,7 @@ client.on("message", message => {
 						}
 					}
 				});
-				break;
+				break;*/
 			case firstParam === "add":
 				if (secondParam === "word") {
 					let word = allWordsInMessage[3];
