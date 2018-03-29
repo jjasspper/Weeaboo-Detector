@@ -1,5 +1,6 @@
 "use strict";
 
+const config = require('dotenv').config();
 const appInfo = require("./package");
 const Discord = require("discord.js");
 
@@ -39,7 +40,7 @@ let info = {
  */
 
 let watchList = {
-	users: [],
+
 };
 
 /**
@@ -177,5 +178,12 @@ client.on("message", message => {
 
 });
 
+console.log(process.env.BOT_TOKEN);
+
+/*if (config.parsed.ENVIRONMENT === 'DEV') {
+	client.login(process.env.BOT_TOKEN);
+} else {
+	client.login(process.env.BOT_TOKEN);
+}*/
 client.login(process.env.BOT_TOKEN);
 
