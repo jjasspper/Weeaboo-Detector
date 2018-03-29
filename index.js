@@ -39,9 +39,7 @@ let info = {
  * @type {{users: Array}}
  */
 
-let watchList = {
-
-};
+let watchList = {};
 
 /**
  * Adds a trigger word to the words list
@@ -90,19 +88,19 @@ client.on("message", message => {
 		let secondParam = allWordsInMessage[2];
 
 		switch (true) {
-			/*case firstParam === "info":
+			case firstParam === "info":
 				sendMessageToChannel({
 					embed: {
-						tile: "Weeabot info",
-						color: 3447003,
+						title: "**Weeaboo Detector (weeabot) version " + appInfo.version + "**",
+						color: 0xae29fe,
 						fields: [
 							{
 								name: "Commands:",
-								value: "!weeabot {command}"
+								value: "- !weeabot info: lists info of this bot."
 							},
 							{
 								name: "Your server:",
-								value: client.guild.name + " id: " + client.guild.id
+								value: "Name: " + message.guild.name
 							}
 						],
 						footer: {
@@ -110,8 +108,11 @@ client.on("message", message => {
 							text: "© JVH 2018"
 						}
 					}
-				});
-				break;*/
+				}, channel);
+				break;
+			case firstParam === "serverid":
+				console.log(message.guild.id);
+				break;
 			case firstParam === "add":
 				if (secondParam === "word") {
 					let word = allWordsInMessage[3];
@@ -178,12 +179,5 @@ client.on("message", message => {
 
 });
 
-console.log(process.env.BOT_TOKEN);
-
-/*if (config.parsed.ENVIRONMENT === 'DEV') {
-	client.login(process.env.BOT_TOKEN);
-} else {
-	client.login(process.env.BOT_TOKEN);
-}*/
 client.login(process.env.BOT_TOKEN);
 
