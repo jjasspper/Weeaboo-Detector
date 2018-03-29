@@ -91,7 +91,7 @@ client.on("message", message => {
 			case firstParam === "info":
 				sendMessageToChannel({
 					embed: {
-						title: "**Weeaboo Detector (weeabot) version " + appInfo.version + "**",
+						title: "Weeaboo Detector (weeabot) version " + appInfo.version,
 						color: 0xae29fe,
 						fields: [
 							{
