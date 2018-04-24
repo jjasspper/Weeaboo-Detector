@@ -1,8 +1,10 @@
 "use strict";
 
-const config = require('dotenv').config();
+require('dotenv').config();
+const botColor = 0xae29fe;
 const appInfo = require("./package");
 const Discord = require("discord.js");
+const http = require("http");
 
 let client = new Discord.Client();
 
@@ -22,13 +24,15 @@ let blockedWords = [
 	'naruto',
 	'kirito',
 	'omae',
-	'shindeiru'
+	'shindeiru',
+	'ohayu',
 ];
 
 /**
  * Contains bot info
  * @type {{version: string, blockedWords: string[]}}
  */
+
 let info = {
 	version: appInfo.version,
 	blockedWords: blockedWords
@@ -42,16 +46,7 @@ let info = {
 let watchList = {};
 
 /**
- * Adds a trigger word to the words list
- * @param word
- */
-
-function addTriggerWord(word) {
-	blockedWords.push(word);
-}
-
-/**
- * Sends message to current channel
+ * Sends a message to the defined channel
  * @param message
  * @param channel
  */
@@ -68,6 +63,26 @@ client.on("ready", () => {
 	client.user.setUsername("Weeabo Detector")
 });
 
+client.on("guildCreate", guild => {
+	http.get("http://dev.api.jaspervanhienen.com/servers/add/" + guild.id + "/" + guild.name, (response) => {
+		let data = '';
+
+		response.on("data", (chunk) => {
+			data += chunk;
+		});
+
+		response.on('end', () => {
+			console.log(JSON.parse(data));
+		});
+
+		response.on('error', (err) => {
+
+		});
+	}).on("error", (err) => {
+		console.log("Error: " + err.message);
+	});
+});
+
 client.on("message", message => {
 
 	if (message.author.equals(client.user)) return;
@@ -75,8 +90,6 @@ client.on("message", message => {
 	let sender = message.author;
 	let content = message.content.toLowerCase();
 	let channel = message.channel;
-
-	console.log(content);
 
 	/**
 	 * Logic for the !weeabot command
@@ -89,26 +102,15 @@ client.on("message", message => {
 
 		switch (true) {
 			case firstParam === "info":
-				sendMessageToChannel({
-					embed: {
-						title: "Weeaboo Detector (weeabot) version " + appInfo.version,
-						color: 0xae29fe,
-						fields: [
-							{
-								name: "Commands:",
-								value: "- !weeabot info: lists info of this bot."
-							},
-							{
-								name: "Your server:",
-								value: "Name: " + message.guild.name
-							}
-						],
-						footer: {
-							icon_url: client.user.avatarURL,
-							text: "© JVH 2018"
-						}
-					}
-				}, channel);
+				let embed = new Discord.RichEmbed()
+					.setTitle("Weeaboo Detector (weeabot) version " + appInfo.version)
+					.setColor(botColor)
+					.addField("Commands: ", "- !weeabot info: lists info of this bot.")
+					.addField("Your server: ", message.guild.name)
+					.addField("Server ID: ", message.guild.id)
+					.setFooter("© JVH 2018")
+					.setThumbnail(client.user.avatarURL);
+				sendMessageToChannel({embed}, channel);
 				break;
 			case firstParam === "serverid":
 				console.log(message.guild.id);
@@ -122,27 +124,26 @@ client.on("message", message => {
 				}
 				break;
 			case firstParam === "remove":
-				if (secondParam === "word") {
-					let word = allWordsInMessage[3];
-					let index = blockedWords.indexOf(word);
-
-					console.log(word);
-					console.log(index);
-
-					if (index === -1) {
-						sendMessageToChannel("Word: '" + word + "' not found in the list.", channel);
-						console.log(blockedWords);
-						break;
-					} else {
-						console.log(index);
-						blockedWords.splice(index, 1);
-						sendMessageToChannel("Word: '" + word + "' has been removed from the list.", channel);
-						console.log(blockedWords);
-						break;
-					}
-				}
 				break;
+			case firstParam === "register":
+				http.get("http://dev.api.jaspervanhienen.com/servers/add/" + message.guild.id + "/" + message.guild.name, (response) => {
+					let data = '';
 
+					response.on("data", (chunk) => {
+						data += chunk;
+					});
+
+					response.on('end', () => {
+						console.log(JSON.parse(data));
+					});
+
+					response.on('error', (err) => {
+
+					});
+				}).on("error", (err) => {
+					console.log("Error: " + err.message);
+				});
+				break;
 			default:
 				sendMessageToChannel("Command not found, use '!weeabot info' to list all commands.", channel);
 				break;
@@ -171,7 +172,7 @@ client.on("message", message => {
 	 * Checks if a word in the message matches a word in the words object
 	 */
 
-	for (let i = 0; i < blockedWords.length; i++) {
+	for (let i = 0; i <= blockedWords.length; i++) {
 		if (content.includes(blockedWords[i])) {
 			sendMessageToChannel("Possible weeaboo detected. User: " + sender + " has been put on the watchlist!", channel);
 		}
