@@ -22,7 +22,8 @@ let blockedWords = [
 	'naruto',
 	'kirito',
 	'omae',
-	'shindeiru'
+	'shindeiru',
+	'otaku',
 ];
 
 /**
