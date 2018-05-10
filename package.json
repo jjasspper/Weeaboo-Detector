@@ -2,7 +2,7 @@
 	"name": "Weeaboo-Detector",
 	"version": "0.1.0a",
 	"repository": "https://github.com/jjasspper/Weeaboo-Detector",
-	"description": "Detects weeaboos and gives them a punishment.",
+	"description": "Detects weeaboos and gives them what they deserve.",
 	"main": "index.js",
 	"author": "jjasspper",
 	"license": "ISC",

@@ -26,6 +26,7 @@ let blockedWords = [
 	'omae',
 	'shindeiru',
 	'ohayu',
+	'otaku',
 ];
 
 /**
