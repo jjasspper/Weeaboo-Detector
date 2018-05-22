@@ -1,10 +1,11 @@
 "use strict";
 
 require('dotenv').config();
-const botColor = 0xae29fe;
-const appInfo = require("./package");
-const Discord = require("discord.js");
-const http = require("http");
+
+const botColor = 0xae29fe,
+	appInfo = require("./package"),
+	Discord = require("discord.js"),
+	http = require("http");
 
 let client = new Discord.Client();
 
@@ -13,21 +14,7 @@ let client = new Discord.Client();
  * @type {string[]}
  */
 
-let blockedWords = [
-	'kawai',
-	'desu',
-	'nani',
-	'arigatou',
-	'nya',
-	'chan',
-	'genji',
-	'naruto',
-	'kirito',
-	'omae',
-	'shindeiru',
-	'ohayu',
-	'otaku',
-];
+let blockedWords;
 
 /**
  * Contains bot info
@@ -36,15 +23,7 @@ let blockedWords = [
 
 let info = {
 	version: appInfo.version,
-	blockedWords: blockedWords
 };
-
-/**
- * Object containing watched users
- * @type {{users: Array}}
- */
-
-let watchList = {};
 
 /**
  * Sends a message to the defined channel
@@ -57,11 +36,28 @@ function sendMessageToChannel(message, channel) {
 }
 
 client.on("ready", () => {
-	console.log("--------------------------------------------------------------");
-	console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
-	console.log("--------------------------------------------------------------");
-	client.user.setActivity("on weeabs");
-	client.user.setUsername("Weeabo Detector")
+	http.get("http://dev.api.jaspervanhienen.com/words/all", (response) => {
+		let data = '';
+
+		response.on("data", (chunk) => {
+			data += chunk;
+		});
+
+		response.on('end', () => {
+			console.log(JSON.parse(data));
+			blockedWords = JSON.parse(data);
+
+			console.log("--------------------------------------------------------------");
+			console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
+			console.log("--------------------------------------------------------------");
+
+			client.user.setActivity("on weeabs");
+			client.user.setUsername("Weeabo Detector")
+		});
+
+	}).on("error", (err) => {
+		console.log("Error: " + err.message);
+	});
 });
 
 client.on("guildCreate", guild => {
@@ -90,6 +86,7 @@ client.on("message", message => {
 
 	let sender = message.author;
 	let content = message.content.toLowerCase();
+	let gluedContent = content.replace(/\s/g, '');
 	let channel = message.channel;
 
 	/**
@@ -161,20 +158,15 @@ client.on("message", message => {
 		}, 1000);
 	}
 
-	if (content.includes("fuck") || content.includes("kanker")) {
-		sendMessageToChannel("Don't swear " + sender + "!", channel);
-	}
-
-	if (content.includes("kasper")) {
-		sendMessageToChannel(sender + " spoel je mond met zeep, stuk schijt!", channel);
-	}
-
 	/**
 	 * Checks if a word in the message matches a word in the words object
 	 */
 
-	for (let i = 0; i <= blockedWords.length; i++) {
-		if (content.includes(blockedWords[i])) {
+	for (let i = 0; i < blockedWords.length; i++) {
+		let blockedWordObj = blockedWords[i];
+		let blockedWord = blockedWordObj.word;
+
+		if (content.includes(blockedWord) || gluedContent.includes(blockedWord)) {
 			sendMessageToChannel("Possible weeaboo detected. User: " + sender + " has been put on the watchlist!", channel);
 		}
 	}
