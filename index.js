@@ -86,7 +86,7 @@ client.on("message", message => {
 
 	let sender = message.author;
 	let content = message.content.toLowerCase();
-	let gluedContent = content.replace(/\s/g, '');
+	let gluedContent = content.replace(/\s+/g, '');
 	let channel = message.channel;
 
 	/**
