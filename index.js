@@ -13,6 +13,8 @@ let client = new Discord.Client();
 
 let blockedWords = [
 	'kawai',
+	'baka',
+	'senpai',
 	'desu',
 	'nani',
 	'arigatou',
@@ -24,6 +26,15 @@ let blockedWords = [
 	'omae',
 	'shindeiru',
 	'otaku',
+	'manga',
+	'hentai',
+	'ecchi',
+	'loli',
+	'lolicon',
+	'waifu',
+	'suki',
+	'daisuki',
+	'oishii',
 ];
 
 /**
