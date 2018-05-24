@@ -1,17 +1,17 @@
 "use strict";
 
-require('dotenv').config();
-
-const botColor = 0xae29fe,
-	appInfo = require("./package"),
+const
+	Config = require('dotenv').config(),
 	Discord = require("discord.js"),
-	http = require("http");
+	apiUri = Config.parsed.API,
+	appInfo = require("./package"),
+	botColor = 0xae29fe,
+	request = require("request");
 
 let client = new Discord.Client();
 
 /**
- * Array containing blocked words
- * @type {string[]}
+ * Variable containing blocked words
  */
 
 let blockedWords;
@@ -35,50 +35,74 @@ function sendMessageToChannel(message, channel) {
 	channel.send(message);
 }
 
+/**
+ * Logic for when the boot has booted.
+ */
+
 client.on("ready", () => {
-	http.get("http://dev.api.jaspervanhienen.com/words/all", (response) => {
-		let data = '';
-
-		response.on("data", (chunk) => {
-			data += chunk;
-		});
-
-		response.on('end', () => {
-			console.log(JSON.parse(data));
+	request({
+		method: 'GET',
+		uri: apiUri + "/words/all",
+	}, (err, response, data) => {
+		if (err) {
+			console.log(err);
+		} else {
 			blockedWords = JSON.parse(data);
-
-			console.log("--------------------------------------------------------------");
-			console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
-			console.log("--------------------------------------------------------------");
-
-			client.user.setActivity("on weeabs");
-			client.user.setUsername("Weeabo Detector")
-		});
-
-	}).on("error", (err) => {
-		console.log("Error: " + err.message);
+			console.log(blockedWords);
+		}
 	});
+
+	console.log("--------------------------------------------------------------");
+	console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
+	console.log("--------------------------------------------------------------");
+
+	client.user.setActivity("on weeabs");
+	client.user.setUsername("Weeabo Detector");
 });
+
+/**
+ * Logic for when the bot joins a server
+ */
 
 client.on("guildCreate", guild => {
-	http.get("http://dev.api.jaspervanhienen.com/servers/add/" + guild.id + "/" + guild.name, (response) => {
-		let data = '';
+	/*	http.get(apiUri + "/servers/add/" + guild.id + "/" + guild.name, (response) => {
+			let data = '';
 
-		response.on("data", (chunk) => {
-			data += chunk;
-		});
+			response.on("data", (chunk) => {
+				data += chunk;
+			});
 
-		response.on('end', () => {
-			console.log(JSON.parse(data));
-		});
+			response.on('end', () => {
+				console.log(JSON.parse(data));
+			});
 
-		response.on('error', (err) => {
+			response.on('error', (err) => {
 
-		});
-	}).on("error", (err) => {
-		console.log("Error: " + err.message);
+			});
+		}).on("error", (err) => {
+			console.log("Error: " + err.message);
+		});*/
+	request({
+		method: 'POST',
+		uri: apiUri + "/servers/add",
+		json: true,
+		body: {
+			"serverID": parseInt(guild.id),
+			"serverName": guild.name
+		}
+	}, (err, response, data) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(guild.name);
+			console.log(data);
+		}
 	});
 });
+
+/**
+ * Logic for send messages
+ */
 
 client.on("message", message => {
 
@@ -113,33 +137,22 @@ client.on("message", message => {
 			case firstParam === "serverid":
 				console.log(message.guild.id);
 				break;
-			case firstParam === "add":
-				if (secondParam === "word") {
-					let word = allWordsInMessage[3];
-					addTriggerWord(word);
-					sendMessageToChannel("Word: '" + word + "' has been added to the list.", channel);
-					console.log(blockedWords);
-				}
-				break;
-			case firstParam === "remove":
-				break;
 			case firstParam === "register":
-				http.get("http://dev.api.jaspervanhienen.com/servers/add/" + message.guild.id + "/" + message.guild.name, (response) => {
-					let data = '';
-
-					response.on("data", (chunk) => {
-						data += chunk;
-					});
-
-					response.on('end', () => {
-						console.log(JSON.parse(data));
-					});
-
-					response.on('error', (err) => {
-
-					});
-				}).on("error", (err) => {
-					console.log("Error: " + err.message);
+				request({
+					method: 'POST',
+					uri: apiUri + "/servers/add",
+					json: true,
+					body: {
+						"serverID": parseInt(message.guild.id),
+						"serverName": message.guild.name
+					}
+				}, (err, response, data) => {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(message.guild.name);
+						console.log(data);
+					}
 				});
 				break;
 			default:
