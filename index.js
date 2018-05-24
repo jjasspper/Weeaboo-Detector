@@ -65,23 +65,6 @@ client.on("ready", () => {
  */
 
 client.on("guildCreate", guild => {
-	/*	http.get(apiUri + "/servers/add/" + guild.id + "/" + guild.name, (response) => {
-			let data = '';
-
-			response.on("data", (chunk) => {
-				data += chunk;
-			});
-
-			response.on('end', () => {
-				console.log(JSON.parse(data));
-			});
-
-			response.on('error', (err) => {
-
-			});
-		}).on("error", (err) => {
-			console.log("Error: " + err.message);
-		});*/
 	request({
 		method: 'POST',
 		uri: apiUri + "/servers/add",
