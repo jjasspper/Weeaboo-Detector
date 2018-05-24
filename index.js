@@ -3,7 +3,7 @@
 const
 	Config = require('dotenv').config(),
 	Discord = require("discord.js"),
-	apiUri = Config.parsed.API,
+	apiUri = process.env.API,
 	appInfo = require("./package"),
 	botColor = 0xae29fe,
 	request = require("request");
