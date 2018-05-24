@@ -1,6 +1,6 @@
 {
 	"name": "Weeaboo-Detector",
-	"version": "0.1.0a",
+	"version": "0.3.1a",
 	"repository": "https://github.com/jjasspper/Weeaboo-Detector",
 	"description": "Detects weeaboos and gives them what they deserve.",
 	"main": "index.js",
