@@ -1,69 +1,32 @@
 "use strict";
 
-const config = require('dotenv').config();
-const appInfo = require("./package");
-const Discord = require("discord.js");
+const
+	Config = require('dotenv').config(),
+	Discord = require("discord.js"),
+	apiUri = Config.parsed.API,
+	appInfo = require("./package"),
+	botColor = 0xae29fe,
+	request = require("request");
 
 let client = new Discord.Client();
 
 /**
- * Array containing blocked words
- * @type {string[]}
+ * Variable containing blocked words
  */
 
-let blockedWords = [
-	'kawai',
-	'baka',
-	'senpai',
-	'desu',
-	'nani',
-	'arigatou',
-	'nya',
-	'chan',
-	'genji',
-	'naruto',
-	'kirito',
-	'omae',
-	'shindeiru',
-	'otaku',
-	'manga',
-	'hentai',
-	'ecchi',
-	'loli',
-	'lolicon',
-	'waifu',
-	'suki',
-	'daisuki',
-	'oishii',
-];
+let blockedWords;
 
 /**
  * Contains bot info
  * @type {{version: string, blockedWords: string[]}}
  */
+
 let info = {
 	version: appInfo.version,
-	blockedWords: blockedWords
 };
 
 /**
- * Object containing watched users
- * @type {{users: Array}}
- */
-
-let watchList = {};
-
-/**
- * Adds a trigger word to the words list
- * @param word
- */
-
-function addTriggerWord(word) {
-	blockedWords.push(word);
-}
-
-/**
- * Sends message to current channel
+ * Sends a message to the defined channel
  * @param message
  * @param channel
  */
@@ -72,13 +35,74 @@ function sendMessageToChannel(message, channel) {
 	channel.send(message);
 }
 
+/**
+ * Logic for when the boot has booted.
+ */
+
 client.on("ready", () => {
+	request({
+		method: 'GET',
+		uri: apiUri + "/words/all",
+	}, (err, response, data) => {
+		if (err) {
+			console.log(err);
+		} else {
+			blockedWords = JSON.parse(data);
+			console.log(blockedWords);
+		}
+	});
+
 	console.log("--------------------------------------------------------------");
 	console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
 	console.log("--------------------------------------------------------------");
+
 	client.user.setActivity("on weeabs");
-	client.user.setUsername("Weeabo Detector")
+	client.user.setUsername("Weeabo Detector");
 });
+
+/**
+ * Logic for when the bot joins a server
+ */
+
+client.on("guildCreate", guild => {
+	/*	http.get(apiUri + "/servers/add/" + guild.id + "/" + guild.name, (response) => {
+			let data = '';
+
+			response.on("data", (chunk) => {
+				data += chunk;
+			});
+
+			response.on('end', () => {
+				console.log(JSON.parse(data));
+			});
+
+			response.on('error', (err) => {
+
+			});
+		}).on("error", (err) => {
+			console.log("Error: " + err.message);
+		});*/
+	request({
+		method: 'POST',
+		uri: apiUri + "/servers/add",
+		json: true,
+		body: {
+			"serverID": parseInt(guild.id),
+			"serverName": guild.name
+		}
+	}, (err, response, data) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(guild.name);
+			console.log(data);
+		}
+	});
+});
+
+/**
+ * Logic for send messages
+ */
 
 client.on("message", message => {
 
@@ -86,9 +110,8 @@ client.on("message", message => {
 
 	let sender = message.author;
 	let content = message.content.toLowerCase();
+	let gluedContent = content.replace(/\s+/g, '');
 	let channel = message.channel;
-
-	console.log(content);
 
 	/**
 	 * Logic for the !weeabot command
@@ -101,60 +124,37 @@ client.on("message", message => {
 
 		switch (true) {
 			case firstParam === "info":
-				sendMessageToChannel({
-					embed: {
-						title: "Weeaboo Detector (weeabot) version " + appInfo.version,
-						color: 0xae29fe,
-						fields: [
-							{
-								name: "Commands:",
-								value: "- !weeabot info: lists info of this bot."
-							},
-							{
-								name: "Your server:",
-								value: "Name: " + message.guild.name
-							}
-						],
-						footer: {
-							icon_url: client.user.avatarURL,
-							text: "© JVH 2018"
-						}
-					}
-				}, channel);
+				let embed = new Discord.RichEmbed()
+					.setTitle("Weeaboo Detector (weeabot) version " + appInfo.version)
+					.setColor(botColor)
+					.addField("Commands: ", "- !weeabot info: lists info of this bot.")
+					.addField("Your server: ", message.guild.name)
+					.addField("Server ID: ", message.guild.id)
+					.setFooter("© JVH 2018")
+					.setThumbnail(client.user.avatarURL);
+				sendMessageToChannel({embed}, channel);
 				break;
 			case firstParam === "serverid":
 				console.log(message.guild.id);
 				break;
-			case firstParam === "add":
-				if (secondParam === "word") {
-					let word = allWordsInMessage[3];
-					addTriggerWord(word);
-					sendMessageToChannel("Word: '" + word + "' has been added to the list.", channel);
-					console.log(blockedWords);
-				}
-				break;
-			case firstParam === "remove":
-				if (secondParam === "word") {
-					let word = allWordsInMessage[3];
-					let index = blockedWords.indexOf(word);
-
-					console.log(word);
-					console.log(index);
-
-					if (index === -1) {
-						sendMessageToChannel("Word: '" + word + "' not found in the list.", channel);
-						console.log(blockedWords);
-						break;
-					} else {
-						console.log(index);
-						blockedWords.splice(index, 1);
-						sendMessageToChannel("Word: '" + word + "' has been removed from the list.", channel);
-						console.log(blockedWords);
-						break;
+			case firstParam === "register":
+				request({
+					method: 'POST',
+					uri: apiUri + "/servers/add",
+					json: true,
+					body: {
+						"serverID": parseInt(message.guild.id),
+						"serverName": message.guild.name
 					}
-				}
+				}, (err, response, data) => {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(message.guild.name);
+						console.log(data);
+					}
+				});
 				break;
-
 			default:
 				sendMessageToChannel("Command not found, use '!weeabot info' to list all commands.", channel);
 				break;
@@ -171,20 +171,15 @@ client.on("message", message => {
 		}, 1000);
 	}
 
-	if (content.includes("fuck") || content.includes("kanker")) {
-		sendMessageToChannel("Don't swear " + sender + "!", channel);
-	}
-
-	if (content.includes("kasper")) {
-		sendMessageToChannel(sender + " spoel je mond met zeep, stuk schijt!", channel);
-	}
-
 	/**
 	 * Checks if a word in the message matches a word in the words object
 	 */
 
 	for (let i = 0; i < blockedWords.length; i++) {
-		if (content.includes(blockedWords[i])) {
+		let blockedWordObj = blockedWords[i];
+		let blockedWord = blockedWordObj.word;
+
+		if (content.includes(blockedWord) || gluedContent.includes(blockedWord)) {
 			sendMessageToChannel("Possible weeaboo detected. User: " + sender + " has been put on the watchlist!", channel);
 		}
 	}
