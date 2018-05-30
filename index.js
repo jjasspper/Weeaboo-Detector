@@ -70,8 +70,8 @@ client.on("guildCreate", guild => {
 		uri: apiUri + "/servers/add",
 		json: true,
 		body: {
-			"serverID": parseInt(guild.id),
-			"serverName": guild.name
+			"serverID": guild.id.toString(),
+			"serverName": guild.name.toString()
 		}
 	}, (err, response, data) => {
 		if (err) {
@@ -126,14 +126,13 @@ client.on("message", message => {
 					uri: apiUri + "/servers/add",
 					json: true,
 					body: {
-						"serverID": parseInt(message.guild.id),
-						"serverName": message.guild.name
+						"serverID": message.guild.id.toString(),
+						"serverName": message.guild.name.toString(),
 					}
 				}, (err, response, data) => {
 					if (err) {
 						console.log(err);
 					} else {
-						console.log(message.guild.name);
 						console.log(data);
 					}
 				});
@@ -161,8 +160,27 @@ client.on("message", message => {
 	for (let i = 0; i < blockedWords.length; i++) {
 		let blockedWordObj = blockedWords[i];
 		let blockedWord = blockedWordObj.word;
+		let blockedWordLevel = blockedWordObj.level;
 
 		if (content.includes(blockedWord) || gluedContent.includes(blockedWord)) {
+			request({
+				method: 'POST',
+				uri: apiUri + "/watchlist/users/add",
+				json: true,
+				body: {
+					"serverID": message.guild.id.toString(),
+					"userID": message.author.id.toString(),
+					"level": blockedWordLevel,
+					"userName": message.author.username
+				}
+			}, (err, response, data) => {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(message.guild.name);
+					console.log(data.success);
+				}
+			});
 			sendMessageToChannel("Possible weeaboo detected. User: " + sender + " has been put on the watchlist!", channel);
 		}
 	}
