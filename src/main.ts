@@ -1,27 +1,25 @@
 "use strict";
 
 const
-	Config = require('dotenv').config(),
-	Discord = require("discord.js"),
-	apiUri = process.env.API,
-	appInfo = require("./package"),
-	botColor = 0xae29fe,
-	request = require("request");
-
-let client = new Discord.Client();
+	Discord:any = require("discord.js"),
+	apiUri:any = process.env.API,
+	appInfo:any = require("../package"),
+	botColor:any = 0xae29fe,
+	request:any = require("request"),
+	client:any = new Discord.Client();
 
 /**
  * Variable containing blocked words
  */
 
-let blockedWords;
+let blockedWords: object;
 
 /**
  * Contains bot info
  * @type {{version: string, blockedWords: string[]}}
  */
 
-let info = {
+let info: object = {
 	version: appInfo.version,
 };
 
@@ -31,7 +29,7 @@ let info = {
  * @param channel
  */
 
-function sendMessageToChannel(message, channel) {
+function sendMessageToChannel(message, channel):void {
 	channel.send(message);
 }
 
@@ -157,7 +155,7 @@ client.on("message", message => {
 	 * Checks if a word in the message matches a word in the words object
 	 */
 
-	for (let i = 0; i < blockedWords.length; i++) {
+	for (let i = 0; i < Object.keys(blockedWords).length; i++) {
 		let blockedWordObj = blockedWords[i];
 		let blockedWord = blockedWordObj.word;
 		let blockedWordLevel = blockedWordObj.level;
