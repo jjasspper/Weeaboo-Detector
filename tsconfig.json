@@ -1,9 +1,12 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "es6",
 		"removeComments": true,
 		"sourceMap": true,
-		"outDir": "dist"
+		"outDir": "dist",
+		"lib": [
+			"es7"
+		]
 	},
 	"include": [
 		"src/**/*"
