@@ -2,13 +2,14 @@
 
 import {GuildHandler} from "./classes/GuildHandler";
 import {MessageHandler} from "./classes/MessageHandler";
+import {WordlistHandler} from "./classes/WordlistHandler";
 
 const
-    Discord: any = require("discord.js"),
-    Guild = new GuildHandler(),
+    Discord = require("discord.js"),
+    guild = new GuildHandler(process.env.API, require('request')),
+    wordlistHandler = new WordlistHandler(),
     appInfo: any = require("../package"),
     botColor: any = 0xae29fe,
-    request: any = require("request"),
     client: any = new Discord.Client();
 
 /**
@@ -41,17 +42,7 @@ function sendMessageToChannel(message, channel): void {
  */
 
 client.on("ready", () => {
-    request({
-        method: 'GET',
-        uri: apiUri + "/words/all",
-    }, (err, response, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            blockedWords = JSON.parse(data);
-            console.log(blockedWords);
-        }
-    });
+    wordlistHandler.getWordlist();
 
     console.log("--------------------------------------------------------------");
     console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
@@ -66,7 +57,7 @@ client.on("ready", () => {
  */
 
 client.on("guildCreate", guild => {
-    Guild.addServer(guild.id, guild.name);
+    guild.addServer(guild.id, guild.name);
 });
 
 /**
@@ -83,7 +74,6 @@ client.on("message", message => {
     /**
      * Logic for the !weeabot command
      */
-
 
     if (content.includes("!weeabot")) {
         let allWordsInMessage = message.content.split(" ");
@@ -134,7 +124,7 @@ client.on("message", message => {
 
     if (content.includes("p!pokemon")) {
         setTimeout(function () {
-            message.channel.send("That is one one cool lookin' pokemon " + sender + "!");
+            message.channel.send("That is one one cool lookin' pokemon " + Message.sender + "!");
         }, 1000);
     }
 
@@ -143,11 +133,11 @@ client.on("message", message => {
      */
 
     for (let i = 0; i < Object.keys(blockedWords).length; i++) {
-        let blockedWordObj = blockedWords[i];
+        let blockedWordObj = wordlistHandler.wordlist[i];
         let blockedWord = blockedWordObj.word;
         let blockedWordLevel = blockedWordObj.level;
 
-        if (content.includes(blockedWord) || gluedContent.includes(blockedWord)) {
+        if (content.includes(blockedWord) || Message.gluedContent.includes(blockedWord)) {
             request({
                 method: 'POST',
                 uri: apiUri + "/watchlist/users/add",
@@ -166,7 +156,7 @@ client.on("message", message => {
                     console.log(data.success);
                 }
             });
-            sendMessageToChannel("Possible weeaboo detected. User: " + sender + " has been put on the watchlist!", channel);
+            sendMessageToChannel("Possible weeaboo detected. User: " + Message.sender + " has been put on the watchlist!", Message.channel);
         }
     }
 

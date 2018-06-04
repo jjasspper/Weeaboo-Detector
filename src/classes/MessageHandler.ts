@@ -12,4 +12,8 @@ export class MessageHandler {
         this.gluedContent = this.content.replace(/\s+/g, '');
         this.allWordsInMessage = this.content.split(" ");
     }
+
+    checkForWeeabShit() {
+
+    }
 }
