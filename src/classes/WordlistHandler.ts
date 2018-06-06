@@ -1,11 +1,13 @@
-import {Wordlist} from "../interfaces/Wordlist";
-import {Api} from "../interfaces/Api";
+import {ApiHandler} from "./api/ApiHandler";
 
-export class WordlistHandler implements Wordlist, Api{
+export interface Wordlist {
+    word: string;
+    level : number;
+}
 
-    wordlist : object;
-    apiUri : string;
-    request : any;
+export class WordlistHandler extends ApiHandler {
+
+    wordlist: Wordlist[];
 
     getWordlist () {
         this.request({
@@ -15,8 +17,9 @@ export class WordlistHandler implements Wordlist, Api{
             if (err) {
                 console.log(err);
             } else {
-                this.wordlist = JSON.parse(data);
-                console.log(this.wordlist);
+                this.wordlist = [
+                    JSON.parse(data)
+                ];
             }
         });
     }

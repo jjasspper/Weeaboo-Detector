@@ -1,11 +1,11 @@
 {
 	"compilerOptions": {
-		"module": "es6",
+		"module": "commonjs",
 		"removeComments": true,
 		"sourceMap": true,
 		"outDir": "dist",
 		"lib": [
-			"es7"
+			"es6"
 		]
 	},
 	"include": [
