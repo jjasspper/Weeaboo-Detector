@@ -11,28 +11,12 @@ const
     Discord = require("discord.js"),
     Request = require('request'),
     API = new ApiHandler(),
-    //guild = new GuildHandler(),
-    Wordlist = new WordlistHandler(),
-    //appInfo: any = require("../package"),
-    //botColor: any = 0xae29fe,
+    wordlist = new WordlistHandler().getWordlist(),
     Client: any = new Discord.Client(),
     bot = new Bot(Client);
-
-/**
- * Variable containing blocked words
- */
-
-let blockedWords: object;
-
-/**
- * Sends a message to the defined channel
- * @param message
- * @param channel
- */
-
-function sendMessageToChannel(message, channel): void {
-    channel.send(message);
-}
+    //guild = new GuildHandler(),
+    //appInfo: any = require("../package"),
+    //botColor: any = 0xae29fe,
 
 /**
  * Logic for when the boot has booted.
@@ -40,7 +24,6 @@ function sendMessageToChannel(message, channel): void {
 
 Client.on("ready", () => {
     API.init(process.env.API, Request);
-    Wordlist.getWordlist();
     bot.init();
 });
 
@@ -57,11 +40,10 @@ Client.on("guildCreate", guild => {
  */
 
 Client.on("message", message => {
-
     if (message.author.equals(Client.user)) return;
 
     const Message = new MessageHandler(message);
-    Message.checkForWeeabShit();
+    Message.checkForWeeabShit(wordlist);
 
     /**
      * Logic for the !weeabot command

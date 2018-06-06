@@ -17,9 +17,8 @@ export class WordlistHandler extends ApiHandler {
             if (err) {
                 console.log(err);
             } else {
-                this.wordlist = [
-                    JSON.parse(data)
-                ];
+                console.log(data);
+                return JSON.parse(data);
             }
         });
     }

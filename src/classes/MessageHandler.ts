@@ -16,8 +16,11 @@ export class MessageHandler extends WordlistHandler {
         channel.send(content)
     }
 
-    checkForWeeabShit(): any {
-        for (let i = 0; i < Object.keys(this.wordlist).length; i++) {
+    checkForWeeabShit(wordlist): any {
+        console.log(wordlist);
+        return;
+
+        for (let i = 0; i < wordlist.length; i++) {
             const watchlist = new WatchlistHandler();
 
             let blockedWord: Wordlist = this.wordlist[i];
