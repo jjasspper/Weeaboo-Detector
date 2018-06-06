@@ -2,8 +2,8 @@ import {ApiHandler} from "./api/ApiHandler";
 
 export class GuildHandler extends ApiHandler {
 
-    apiUri : string;
-    request : any;
+    apiUri: string;
+    request: any;
 
     addServer(id: string, name: string): void {
         this.request({

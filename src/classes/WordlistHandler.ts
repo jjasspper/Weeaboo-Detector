@@ -2,14 +2,14 @@ import {ApiHandler} from "./api/ApiHandler";
 
 export interface Wordlist {
     word: string;
-    level : number;
+    level: number;
 }
 
 export class WordlistHandler extends ApiHandler {
 
     wordlist: Wordlist[];
 
-    getWordlist () {
+    getWordlist(): void {
         this.request({
             method: 'GET',
             uri: this.apiUri + "/words/all",

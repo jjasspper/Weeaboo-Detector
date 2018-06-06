@@ -12,7 +12,11 @@ export class MessageHandler extends WordlistHandler {
         this.gluedContent = this.message.content.replace(/\s+/g, '');
     }
 
-    checkForWeeabShit() {
+    static sendMessage(content: string, channel: any): void {
+        channel.send(content)
+    }
+
+    checkForWeeabShit(): any {
         for (let i = 0; i < Object.keys(this.wordlist).length; i++) {
             const watchlist = new WatchlistHandler();
 
@@ -22,7 +26,7 @@ export class MessageHandler extends WordlistHandler {
 
             if (this.message.content.includes(blockedWord) || this.gluedContent.includes(word)) {
                 watchlist.addUser(this.message.guild.id, this.message.author.id, level, this.message.author.username);
-                //sendMessageToChannel("Possible weeaboo detected. User: " + Message.sender + " has been put on the watchlist!", Message.channel);
+                MessageHandler.sendMessage("Possible weeaboo detected. User: " + this.message.sender + " has been put on the watchlist!", this.message.channel);
             }
         }
     }

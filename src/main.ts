@@ -1,21 +1,20 @@
 "use strict";
 
-import {GuildHandler} from "./classes/GuildHandler";
 import {MessageHandler} from "./classes/MessageHandler";
 import {WordlistHandler} from "./classes/WordlistHandler";
 import {Bot} from "./classes/Bot";
 import {ApiHandler} from "./classes/api/ApiHandler";
 
-require('dotenv');
+require('dotenv').config();
 
 const
     Discord = require("discord.js"),
     Request = require('request'),
     API = new ApiHandler(),
-    guild = new GuildHandler(),
+    //guild = new GuildHandler(),
     Wordlist = new WordlistHandler(),
-    appInfo: any = require("../package"),
-    botColor: any = 0xae29fe,
+    //appInfo: any = require("../package"),
+    //botColor: any = 0xae29fe,
     Client: any = new Discord.Client(),
     bot = new Bot(Client);
 

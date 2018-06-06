@@ -1,12 +1,12 @@
 export class Bot {
 
-    private client : any;
+    private client: any;
 
     constructor(client) {
         this.client = client;
     }
 
-    init () {
+    init(): void {
         this.client.user.setActivity("on weeabs");
         this.client.user.setUsername("Weeabo Detector");
 
