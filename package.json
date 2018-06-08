@@ -3,9 +3,9 @@
 	"version": "0.3.1a",
 	"repository": "https://github.com/jjasspper/Weeaboo-Detector",
 	"description": "Detects weeaboos and gives them what they deserve.",
-	"main": "dist/main.js",
 	"author": "jjasspper",
 	"license": "ISC",
+	"main": "src/main.ts",
 	"types": "node_modules/discord.js/index.d.ts",
 	"scripts": {
 		"start": "node dist/main"

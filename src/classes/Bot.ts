@@ -1,17 +1,17 @@
 export class Bot {
 
-    private client: any;
+	private client: any;
 
-    constructor(client) {
-        this.client = client;
-    }
+	constructor(client) {
+		this.client = client;
+	}
 
-    init(): void {
-        this.client.user.setActivity("on weeabs");
-        this.client.user.setUsername("Weeabo Detector");
+	init(): void {
+		this.client.user.setActivity("with weeabs");
+		this.client.user.setUsername("Weeabo Detector");
 
-        console.log("--------------------------------------------------------------");
-        console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
-        console.log("--------------------------------------------------------------");
-    }
+		console.log("--------------------------------------------------------------");
+		console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
+		console.log("--------------------------------------------------------------");
+	}
 }
