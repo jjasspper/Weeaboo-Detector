@@ -1,13 +1,10 @@
-import {Wordlist, WordTemplate} from "./Wordlist";
 import {Watchlist} from "./Watchlist";
 
-export class Message extends Wordlist {
-
-	message: any;
-	gluedContent: string;
+export class Message {
+	private message: any;
+	private gluedContent: string;
 
 	constructor(message) {
-		super();
 		this.message = message;
 		this.gluedContent = this.message.content.replace(/\s+/g, '');
 	}
@@ -17,13 +14,10 @@ export class Message extends Wordlist {
 	}
 
 	checkForWeeabShit(wordlist): void {
-		console.log(wordlist);
-		return;
-
 		for (let i = 0; i < wordlist.length; i++) {
 			const watchlist = new Watchlist();
 
-			let blockedWord: WordTemplate = this.wordlist[i];
+			let blockedWord = wordlist[i];
 			let word: string = blockedWord.word;
 			let level: number = blockedWord.level;
 

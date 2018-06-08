@@ -1,26 +1,26 @@
 import {Api} from "./api/Api";
 
-export interface WordTemplate {
-	word: string;
-	level: number;
-}
+export class Wordlist {
 
-export class Wordlist extends Api {
+	public wordlist;
 
-	wordlist: WordTemplate[];
+	constructor() {
+		const api = new Api();
 
-	getWordlist(): void {
-		this.request({
+		api.request({
 			method: 'GET',
-			uri: this.apiUri + "/words/all",
+			uri: api.apiUri + "/words/all",
 		}, (err, response, data) => {
 			if (err) {
 				console.log(err);
 			} else {
 				this.wordlist = JSON.parse(data);
-				return this.wordlist;
 			}
 		});
+	}
+
+	getWordlist() {
+		return this.wordlist;
 	}
 }
 

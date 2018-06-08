@@ -4,16 +4,18 @@ import {Wordlist} from "./classes/Wordlist";
 
 require('dotenv').config();
 
+let wordlist;
+
 const
 	discord = require("discord.js"),
 	client = new discord.Client(),
 	bot = new Bot(client),
 	words = new Wordlist();
 
-let wordlist = words.getWordlist();
-
 client.on("ready", () => {
 	bot.init();
+	wordlist = words.getWordlist();
+
 });
 
 client.on("guildCreate", guild => {
@@ -24,7 +26,6 @@ client.on("message", msg => {
 	if (msg.author.equals(client.user)) return;
 
 	const message = new Message(msg);
-	console.log(wordlist);
 	message.checkForWeeabShit(wordlist);
 
 	/*if (content.includes("!weeabot")) {
