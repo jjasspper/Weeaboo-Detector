@@ -1,6 +1,6 @@
-import {ApiHandler} from "./api/ApiHandler";
+import {Api} from "./api/Api";
 
-export class GuildHandler extends ApiHandler {
+export class Guild extends Api {
 
     apiUri: string;
     request: any;

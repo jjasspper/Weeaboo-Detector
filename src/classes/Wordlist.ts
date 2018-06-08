@@ -1,11 +1,11 @@
-import {ApiHandler} from "./api/ApiHandler";
+import {Api} from "./api/Api";
 
 export interface Wordlist {
     word: string;
     level: number;
 }
 
-export class WordlistHandler extends ApiHandler {
+export class Wordlist extends Api {
 
     wordlist: Wordlist[];
 

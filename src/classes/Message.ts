@@ -1,7 +1,7 @@
-import {Wordlist, WordlistHandler} from "./WordlistHandler";
-import {WatchlistHandler} from "./WatchlistHandler";
+import {Wordlist} from "./Wordlist";
+import {Watchlist} from "./Watchlist";
 
-export class MessageHandler extends WordlistHandler {
+export class Message extends Wordlist {
 
     message: any;
     gluedContent: string;
@@ -21,7 +21,7 @@ export class MessageHandler extends WordlistHandler {
         return;
 
         for (let i = 0; i < wordlist.length; i++) {
-            const watchlist = new WatchlistHandler();
+            const watchlist = new Watchlist();
 
             let blockedWord: Wordlist = this.wordlist[i];
             let word: string = blockedWord.word;
@@ -29,7 +29,7 @@ export class MessageHandler extends WordlistHandler {
 
             if (this.message.content.includes(blockedWord) || this.gluedContent.includes(word)) {
                 watchlist.addUser(this.message.guild.id, this.message.author.id, level, this.message.author.username);
-                MessageHandler.sendMessage("Possible weeaboo detected. User: " + this.message.sender + " has been put on the watchlist!", this.message.channel);
+                Message.sendMessage("Possible weeaboo detected. User: " + this.message.sender + " has been put on the watchlist!", this.message.channel);
             }
         }
     }

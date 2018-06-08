@@ -1,6 +1,6 @@
-import {ApiHandler} from "./api/ApiHandler";
+import {Api} from "./api/Api";
 
-export class WatchlistHandler extends ApiHandler {
+export class Watchlist extends Api {
     addUser(serverID, userID, level, userName): void {
         this.request({
             method: 'POST',

@@ -1,29 +1,27 @@
-"use strict";
-
-import {MessageHandler} from "./classes/MessageHandler";
-import {WordlistHandler} from "./classes/WordlistHandler";
+import {Message} from "./classes/Message";
+import {Wordlist} from "./classes/Wordlist";
 import {Bot} from "./classes/Bot";
-import {ApiHandler} from "./classes/api/ApiHandler";
+import {Api} from "./classes/api/Api";
 
 require('dotenv').config();
 
 const
-    Discord = require("discord.js"),
-    Request = require('request'),
-    API = new ApiHandler(),
-    wordlist = new WordlistHandler().getWordlist(),
-    Client: any = new Discord.Client(),
-    bot = new Bot(Client);
-    //guild = new GuildHandler(),
-    //appInfo: any = require("../package"),
-    //botColor: any = 0xae29fe,
+    discord = require("discord.js"),
+    request = require('request'),
+    api = new Api(),
+    wordlist = new Wordlist().getWordlist(),
+    client: any = new discord.Client(),
+    bot = new Bot(client);
+//guild = new GuildHandler(),
+//appInfo: any = require("../package"),
+//botColor: any = 0xae29fe,
 
 /**
  * Logic for when the boot has booted.
  */
 
-Client.on("ready", () => {
-    API.init(process.env.API, Request);
+client.on("ready", () => {
+    api.init(process.env.API, request);
     bot.init();
 });
 
@@ -31,7 +29,7 @@ Client.on("ready", () => {
  * Logic for when the bot joins a server
  */
 
-Client.on("guildCreate", guild => {
+client.on("guildCreate", guild => {
     guild.addServer(guild.id, guild.name);
 });
 
@@ -39,35 +37,35 @@ Client.on("guildCreate", guild => {
  * Logic for send messages
  */
 
-Client.on("message", message => {
-    if (message.author.equals(Client.user)) return;
+client.on("message", msg => {
+    if (msg.author.equals(client.user)) return;
 
-    const Message = new MessageHandler(message);
-    Message.checkForWeeabShit(wordlist);
+    const message = new Message(msg);
+    message.checkForWeeabShit(wordlist);
 
     /**
      * Logic for the !weeabot command
      */
 
     /*if (content.includes("!weeabot")) {
-        let allWordsInMessage = message.content.split(" ");
+        let allWordsInMessage = msg.content.split(" ");
         let firstParam = allWordsInMessage[1];
         let secondParam = allWordsInMessage[2];
 
         switch (true) {
             case firstParam === "info":
-                let embed = new Discord.RichEmbed()
+                let embed = new discord.RichEmbed()
                     .setTitle("Weeaboo Detector (weeabot) version " + appInfo.version)
                     .setColor(botColor)
                     .addField("Commands: ", "- !weeabot info: lists info of this bot.")
-                    .addField("Your server: ", message.guild.name)
-                    .addField("Server ID: ", message.guild.id)
+                    .addField("Your server: ", msg.guild.name)
+                    .addField("Server ID: ", msg.guild.id)
                     .setFooter("© JVH 2018")
-                    .setThumbnail(Client.user.avatarURL);
+                    .setThumbnail(client.user.avatarURL);
                 sendMessageToChannel({embed}, channel);
                 break;
             case firstParam === "serverid":
-                console.log(message.guild.id);
+                console.log(msg.guild.id);
                 break;
             case firstParam === "register":
                 request({
@@ -75,8 +73,8 @@ Client.on("message", message => {
                     uri: apiUri + "/servers/add",
                     json: true,
                     body: {
-                        "serverID": message.guild.id.toString(),
-                        "serverName": message.guild.name.toString(),
+                        "serverID": msg.guild.id.toString(),
+                        "serverName": msg.guild.name.toString(),
                     }
                 }, (err, response, data) => {
                     if (err) {
@@ -98,11 +96,11 @@ Client.on("message", message => {
 
     if (content.includes("p!pokemon")) {
         setTimeout(function () {
-            message.channel.send("That is one one cool lookin' pokemon " + Message.sender + "!");
+            msg.channel.send("That is one one cool lookin' pokemon " + msg.sender + "!");
         }, 1000);
     }*/
 
 });
 
-Client.login(process.env.BOT_TOKEN);
+client.login(process.env.BOT_TOKEN);
 

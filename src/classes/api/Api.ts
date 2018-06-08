@@ -1,4 +1,4 @@
-export class ApiHandler {
+export class Api {
     protected apiUri: string = process.env.API;
     protected request: any = require("request");
 
