@@ -2,6 +2,7 @@ import {Watchlist} from "./Watchlist";
 
 export class Message {
 	private message: any;
+	private author: any;
 	private gluedContent: string;
 
 	constructor(message) {
@@ -9,7 +10,7 @@ export class Message {
 		this.gluedContent = this.message.content.replace(/\s+/g, '');
 	}
 
-	static sendMessage(content: string, channel: any): void {
+	static sendMessage(content: any, channel: any): void {
 		channel.send(content)
 	}
 
@@ -23,7 +24,7 @@ export class Message {
 
 			if (this.message.content.includes(blockedWord) || this.gluedContent.includes(word)) {
 				watchlist.addUser(this.message.guild.id, this.message.author.id, level, this.message.author.username);
-				Message.sendMessage("Possible weeaboo detected. User: " + this.message.sender + " has been put on the watchlist!", this.message.channel);
+				Message.sendMessage(`Possible weeaboo detected. User: <@${this.message.author.id}> has been put on the watchlist!`, this.message.channel);
 			}
 		}
 	}

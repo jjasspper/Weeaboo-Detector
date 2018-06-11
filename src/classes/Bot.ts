@@ -1,6 +1,6 @@
 export class Bot {
 
-	private client: any;
+	protected client: any;
 
 	constructor(client) {
 		this.client = client;
@@ -13,5 +13,9 @@ export class Bot {
 		console.log("--------------------------------------------------------------");
 		console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
 		console.log("--------------------------------------------------------------");
+	}
+
+	getClient() {
+		return this.client;
 	}
 }
