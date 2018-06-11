@@ -2,6 +2,7 @@ import {Message} from "./classes/Message";
 import {Bot} from "./classes/Bot";
 import {Wordlist} from "./classes/Wordlist";
 import {Commands} from "./classes/Commands";
+import {Whitelist} from "./classes/Whitelist";
 
 /**
  * Loading in npm packages file
@@ -15,6 +16,7 @@ const discord = require("discord.js");
  */
 
 let wordlist;
+let whitelist;
 
 /**
  * Loading in classes
@@ -23,15 +25,17 @@ let wordlist;
 const
 	client = new discord.Client(),
 	bot = new Bot(client),
-	words = new Wordlist();
+	words = new Wordlist(),
+	allowed = new Whitelist();
 
 /**
  * Bot initialisation
  */
 
 client.on("ready", () => {
-	bot.init();
 	wordlist = words.getWordlist();
+	whitelist = allowed.getWhitelist();
+	bot.init();
 });
 
 /**
