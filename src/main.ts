@@ -56,7 +56,7 @@ client.on("message", msg => {
 	const message = new Message(msg);
 	const commands = new Commands(client);
 
-	message.checkForWeeabShit(wordlist);
+	message.checkForWeeabShit(wordlist, whitelist);
 	commands.parse(msg, msg.content)
 });
 
