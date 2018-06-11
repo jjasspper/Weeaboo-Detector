@@ -6,7 +6,7 @@ export class Commands {
 	private config = require('../../config.json');
 	private client: any;
 
-	constructor (client) {
+	constructor(client) {
 		this.client = client;
 	}
 
