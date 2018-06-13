@@ -27,7 +27,7 @@ export class Message {
 					let item = whitelist[i2];
 					let listedWord = item.word;
 
-					if (this.message.content === listedWord) {
+					if (this.message.content.includes(listedWord) || this.gluedContent.includes(listedWord)) {
 						continue mainLoop;
 					}
 				}
