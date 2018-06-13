@@ -32,10 +32,17 @@ const
  * Bot initialisation
  */
 
-client.on("ready", () => {
-	wordlist = words.getWordlist();
-	whitelist = allowed.getWhitelist();
-	bot.init();
+client.on("ready", async () => {
+	try {
+		console.log('Initialising..');
+		wordlist = await words.retrieve();
+		console.log('Wordlist initialized.');
+		whitelist = await allowed.retrieve();
+		console.log('Whitelist initialized.');
+		bot.init();
+	} catch (e) {
+		throw new Error(e);
+	}
 });
 
 /**

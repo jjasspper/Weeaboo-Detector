@@ -2,25 +2,25 @@ import {Api} from "./api/Api";
 
 export class Wordlist {
 
-	public wordlist;
+	private api;
 
 	constructor() {
-		const api = new Api();
-
-		api.request({
-			method: 'GET',
-			uri: api.apiUri + "/words/all",
-		}, (err, response, data) => {
-			if (err) {
-				console.log(err);
-			} else {
-				this.wordlist = JSON.parse(data);
-			}
-		});
+		this.api = new Api();
 	}
 
-	getWordlist() {
-		return this.wordlist;
+	retrieve() {
+		return new Promise((resolve, reject) => {
+			this.api.request({
+				method: 'GET',
+				uri: this.api.apiUri + "/words/all",
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(JSON.parse(data));
+				}
+			});
+		})
 	}
 }
 
