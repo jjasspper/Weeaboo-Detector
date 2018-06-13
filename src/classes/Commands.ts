@@ -1,17 +1,15 @@
 import {Guild} from "./Guild";
 import {Message} from "./Message";
+import {Bot} from "./Bot";
 
-export class Commands {
+export class Commands extends Bot {
 	private package = require('../../package.json');
 	private config = require('../../config.json');
-	private client: any;
-
-	constructor(client) {
-		this.client = client;
-	}
+	protected client: any;
 
 	parse(msg, content) {
-		const discord = require("discord.js");
+
+		const discord = require('discord.js');
 
 		if (content.includes(this.config.prefix)) {
 			let allWordsInMessage = content.split(" ");
@@ -25,6 +23,7 @@ export class Commands {
 					.addField("Commands: ", "- !weeabot info: lists info of this bot.")
 					.addField("Your server: ", msg.guild.name)
 					.addField("Server ID: ", msg.guild.id)
+					.addField("Bugs: ", `Found a bug? Report it [here](https://github.com/jjasspper/Weeaboo-Detector/issues)`)
 					.setFooter("© JVH 2018")
 					.setThumbnail(this.client.user.avatarURL);
 					Message.sendMessage({embed}, msg.channel);
