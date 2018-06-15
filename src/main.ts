@@ -12,7 +12,7 @@ require('dotenv').config();
 const discord = require("discord.js");
 
 /**
- * Variable that will store a wordlist
+ * Variables that will store a wordlist
  */
 
 let wordlist;
@@ -29,12 +29,12 @@ const
 	allowed = new Whitelist();
 
 /**
- * Bot initialisation
+ * Do things when bot is ready
  */
 
 client.on("ready", async () => {
 	try {
-		console.log('Initialising..');
+		console.log('Initialising...');
 		wordlist = await words.retrieve();
 		console.log('Wordlist initialized.');
 		whitelist = await allowed.retrieve();
@@ -46,7 +46,7 @@ client.on("ready", async () => {
 });
 
 /**
- * Tasks on guild join
+ * Do things when bot joins a server
  */
 
 client.on("guildCreate", guild => {
@@ -54,7 +54,7 @@ client.on("guildCreate", guild => {
 });
 
 /**
- * Tasks that trigger on message
+ * Do things when a message is send
  */
 
 client.on("message", msg => {
@@ -66,6 +66,32 @@ client.on("message", msg => {
 	message.checkForWeeabShit(wordlist, whitelist);
 	commands.parse(msg, msg.content)
 });
+
+/**
+ * Do things when user data gets updated
+ */
+
+client.on("userUpdate", (oldUser, newUser) => {
+
+});
+
+/**
+ * Do things when server data gets updated
+ */
+
+client.on("guildUpdate", (oldServer, newServer) => {
+
+});
+
+/**
+ * Do things when a mesaage gets updated
+ */
+
+client.on("messageUpdate", (oldMessage, newMessage) => {
+	const message = new Message(newMessage);
+	message.checkForWeeabShit(wordlist, whitelist);
+});
+
 
 /**
  * Logging in to discord

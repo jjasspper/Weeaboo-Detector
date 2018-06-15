@@ -8,7 +8,7 @@ export class Wordlist {
 		this.api = new Api();
 	}
 
-	retrieve() {
+	retrieve(): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.api.request({
 				method: 'GET',
