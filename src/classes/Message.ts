@@ -20,6 +20,7 @@ export class Message {
 
 		primaryLoop:
 			for (let i = 0; i < wordlist.length; i++) {
+
 				let blockedWordObj = wordlist[i];
 				let blockedWord: string = blockedWordObj.word;
 				let blockedWordLevel: number = blockedWordObj.level;
@@ -39,8 +40,14 @@ export class Message {
 					watchlist.addUser(this.message.guild.id, this.message.author.id, blockedWordLevel, this.message.author.username);
 					Message.send(`Possible weeaboo detected. User: <@${this.message.author.id}> has been put on the watchlist!`, this.message.channel);
 				}
+
+				if (i == wordlist.length -1) {
+					console.log('kanker');
+					return;
+				}
 			}
 
+		// Heavy loop
 		secondaryLoop:
 			for (let i = 0; i < sendWordsArray.length; i++) {
 				for (let i2 = 0; i2 < wordlist.length; i2++) {
@@ -52,25 +59,26 @@ export class Message {
 					let sendWord = sendWordsArray[i];
 					let sendWordLength = sendWord.length;
 
-					// If the number of characters in the send word is smaller then the blocked word; start the next iteration.
-					if (sendWordLength === blockedWordLength) {
-						console.log(`Send word length: ${sendWordLength}, blocked word length: ${blockedWordLength}`);
+					if (sendWordLength > blockedWordLength) {
+						continue secondaryLoop;
+					}
 
-						// Loop trough whitelist
-						for (let i3 = 0; i3 < whitelist.length; i3++) {
-							let item = whitelist[i3];
-							let listedWord = item.word;
+					console.log(`Send word length: ${sendWordLength}, blocked word length: ${blockedWordLength}`);
 
-							if (sendWord.includes(listedWord) || this.gluedContent.includes(listedWord)) {
-								continue secondaryLoop;
-							}
+					// Loop trough whitelist
+					for (let i3 = 0; i3 < whitelist.length; i3++) {
+						let item = whitelist[i3];
+						let listedWord = item.word;
+
+						if (sendWord.includes(listedWord)) {
+							continue secondaryLoop;
 						}
+					}
 
-						// Check if word contains the blocked word
-						if (sendWord.includes(blockedWord) || this.gluedContent.includes(blockedWord)) {
-							watchlist.addUser(this.message.guild.id, this.message.author.id, blockedWordLevel, this.message.author.username);
-							Message.send(`Possible weeaboo detected. User: <@${this.message.author.id}> has been put on the watchlist!`, this.message.channel);
-						}
+					// Check if word contains the blocked word
+					if (sendWord.includes(blockedWord)) {
+						watchlist.addUser(this.message.guild.id, this.message.author.id, blockedWordLevel, this.message.author.username);
+						Message.send(`Possible weeaboo detected. User: <@${this.message.author.id}> has been put on the watchlist!`, this.message.channel);
 					}
 				}
 			}
