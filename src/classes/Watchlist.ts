@@ -15,11 +15,23 @@ export class Watchlist extends Api {
 				}
 			}, (err, response, data) => {
 				if (err) {
-					reject(err);
+					reject(process.exit(err));
 				} else {
 					resolve(data);
 				}
 			})
 		});
+	}
+
+	whitelistUser(serverID, user) {
+
+	}
+
+	resetWeeabLevel(serverID, userID) {
+
+	}
+
+	updateUsername(serverID, userID, newName) {
+
 	}
 }

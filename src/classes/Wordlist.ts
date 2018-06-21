@@ -15,7 +15,7 @@ export class Wordlist {
 				uri: this.api.apiUri + "/words/all",
 			}, (err, response, data) => {
 				if (err) {
-					reject(err);
+					reject(process.exit(err));
 				} else {
 					resolve(JSON.parse(data));
 				}

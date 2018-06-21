@@ -9,7 +9,7 @@ export class Commands extends Bot {
 
 	parse(msg, content) {
 
-		const discord = require('discord.js');
+		const Discord = require('discord.js');
 
 		if (content.includes(this.config.prefix)) {
 			let allWordsInMessage = content.split(" ");
@@ -17,7 +17,7 @@ export class Commands extends Bot {
 
 			switch (true) {
 				case firstParam === "info":
-					let embed = new discord.RichEmbed()
+					let embed = new Discord.RichEmbed()
 					.setTitle("Weeaboo Detector (weeabot) version " + this.package.version)
 					.setColor(this.config.color)
 					.addField("Commands: ", "- !weeabot info: lists info of this bot.")
@@ -26,7 +26,7 @@ export class Commands extends Bot {
 					.addField("Bugs: ", `Found a bug? Report it [here](https://github.com/jjasspper/Weeaboo-Detector/issues)`)
 					.setFooter("© JVH 2018")
 					.setThumbnail(this.client.user.avatarURL);
-					Message.sendMessage({embed}, msg.channel);
+					Message.send({embed}, msg.channel);
 					break;
 				case firstParam === "serverid":
 					console.log(msg.guild.id);
@@ -36,7 +36,7 @@ export class Commands extends Bot {
 					guild.addServer(msg.guild.id, msg.guild.name);
 					break;
 				default:
-					Message.sendMessage("Command not found, use '!weeabot info' to list all commands.", msg.channel);
+					Message.send("Command not found, use '!weeabot info' to list all commands.", msg.channel);
 					break;
 			}
 

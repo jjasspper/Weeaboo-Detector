@@ -9,7 +9,7 @@ import {Whitelist} from "./classes/Whitelist";
  */
 
 require('dotenv').config();
-const discord = require("discord.js");
+const Discord = require("discord.js");
 
 /**
  * Variables that will store a wordlist
@@ -23,7 +23,7 @@ let whitelist;
  */
 
 const
-	client = new discord.Client(),
+	client = new Discord.Client(),
 	bot = new Bot(client),
 	words = new Wordlist(),
 	allowed = new Whitelist();
@@ -94,7 +94,7 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
 
 
 /**
- * Logging in to discord
+ * Logging in to Discord
  */
 
 client.login(process.env.BOT_TOKEN);

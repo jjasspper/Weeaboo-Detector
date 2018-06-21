@@ -23,6 +23,17 @@ export class Guild extends Api {
 				}
 			});
 		});
+	}
+
+	updateMaxMuteLevel(serverID, level) {
+
+	}
+
+	updateMaxKickLevel(serverID, level) {
+
+	}
+
+	updateMaxBanLevel(serverID, level) {
 
 	}
 

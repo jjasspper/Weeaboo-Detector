@@ -12,7 +12,7 @@ export class Whitelist {
 		return new Promise((resolve, reject) => {
 			this.api.request({
 				method: 'GET',
-				uri: this.api.apiUri + "/whitelist/all",
+				uri: this.api.apiUri + "/whitelist/words/all",
 			}, (err, response, data) => {
 				if (err) {
 					reject(err);
