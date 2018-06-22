@@ -26,15 +26,63 @@ export class Guild extends Api {
 	}
 
 	updateMaxMuteLevel(serverID, level) {
-
+		return new Promise((resolve, reject) => {
+			this.request({
+				method: 'PUT',
+				uri: this.apiUri + "/servers/update/mutelevel",
+				json: true,
+				body: {
+					"serverID": serverID,
+					"level": level
+				}
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			});
+		});
 	}
 
 	updateMaxKickLevel(serverID, level) {
-
+		return new Promise((resolve, reject) => {
+			this.request({
+				method: 'PUT',
+				uri: this.apiUri + "/servers/update/kicklevel",
+				json: true,
+				body: {
+					"serverID": serverID,
+					"level": level
+				}
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			});
+		});
 	}
 
 	updateMaxBanLevel(serverID, level) {
-
+		return new Promise((resolve, reject) => {
+			this.request({
+				method: 'PUT',
+				uri: this.apiUri + "/servers/update/banlevel",
+				json: true,
+				body: {
+					"serverID": serverID,
+					"level": level
+				}
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			});
+		});
 	}
 
 }
