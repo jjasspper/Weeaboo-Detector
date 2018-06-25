@@ -27,7 +27,7 @@ export class Watchlist extends Api {
 
 	}
 
-	resetWeeabLevel(serverID, userID) {
+	setWeeabLevel(serverID, userID) {
 
 	}
 

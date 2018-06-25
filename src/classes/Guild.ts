@@ -25,6 +25,10 @@ export class Guild extends Api {
 		});
 	}
 
+	removeServer(id: string) {
+
+	}
+
 	updateMaxMuteLevel(serverID, level) {
 		return new Promise((resolve, reject) => {
 			this.request({

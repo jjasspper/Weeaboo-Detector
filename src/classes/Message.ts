@@ -20,7 +20,7 @@ export class Message {
 		channel.send(content)
 	}
 
-	static sendApiResponse(data : Data, channel : any) {
+	static sendApiResponse(data: Data, channel: any) {
 		if (data.success) {
 			Message.send(data.message, channel);
 		} else {
@@ -30,9 +30,8 @@ export class Message {
 			.setColor(0xff3d3d)
 			.addField("Error message:", `${data.message}`)
 			.addField("Error code:", `${data.errorCode}`)
-			.addField("Please report this error", `To make this bot as solid as possible, I would appreciate it if you could send an error report. 
-			Please go to [this](https://github.com/jjasspper/Weeaboo-Detector/issues) link and create a new issue. Inside the issue, include the error message, 
-			the error code above and datails of how the error appeared. I will fix the issue as soon as I can. Thanks in advance!`)
+			.addField("Not you fault? Please report this error!",
+				`To make this bot as solid as possible, I would appreciate it if you could send an error report. Please go to [this](https://github.com/jjasspper/Weeaboo-Detector/issues) link and create a new issue. Inside the issue, include the error message, the error code above and details of how the error appeared. I will fix the issue as soon as I can. Thanks in advance!`)
 			.setFooter("© JVH 2018");
 
 			Message.send({embed}, channel);
@@ -42,28 +41,33 @@ export class Message {
 	checkForWeeabShit(wordlist: any, whitelist: any): void {
 		const watchlist = new Watchlist();
 		const sendWordsArray = this.message.content.split(" ");
+		let finalLevel: number = 0;
+		let sendWordsArrayLength = sendWordsArray.length;
 
 		// Heavy loop
 		mainLoop:
-			for (let i = 0; i < sendWordsArray.length; i++) {
-				for (let i2 = 0; i2 < wordlist.length; i2++) {
-					let blockedWordObj = wordlist[i2];
+			while (sendWordsArrayLength--) {
+
+				let wordlistLength = wordlist.length;
+
+				while (wordlistLength--) {
+					let blockedWordObj = wordlist[wordlistLength];
+
 					let blockedWord: string = blockedWordObj.word;
 					let blockedWordLevel: number = blockedWordObj.level;
 					let blockedWordLength: number = blockedWord.length;
 
-					let sendWord = sendWordsArray[i];
-					let sendWordLength = sendWord.length;
+					let sendWord: string = sendWordsArray[sendWordsArrayLength];
+					let sendWordLength: number = sendWord.length;
+
+					let whitelistLength = whitelist.length;
 
 					if (sendWordLength > blockedWordLength) {
-						continue mainLoop;
+						continue;
 					}
 
-					console.log(`Send word length: ${sendWordLength}, blocked word length: ${blockedWordLength}`);
-
-					// Loop trough whitelist
-					for (let i3 = 0; i3 < whitelist.length; i3++) {
-						let item = whitelist[i3];
+					while (whitelistLength--) {
+						let item = whitelist[whitelistLength];
 						let listedWord = item.word;
 
 						if (sendWord.includes(listedWord)) {
@@ -71,12 +75,19 @@ export class Message {
 						}
 					}
 
-					// Check if word contains the blocked word
 					if (sendWord.includes(blockedWord) || this.gluedContent.includes(blockedWord)) {
-						watchlist.addUser(this.message.guild.id, this.message.author.id, blockedWordLevel, this.message.author.username);
-						Message.send(`Possible weeaboo detected. User: <@${this.message.author.id}> has been put on the watchlist!`, this.message.channel);
+						finalLevel += blockedWordLevel;
 					}
 				}
+
+				if (sendWordsArrayLength === 0) {
+					if (finalLevel > 0) {
+						watchlist.addUser(this.message.guild.id, this.message.author.id, finalLevel, this.message.author.username);
+						Message.send(`Possible weeaboo detected. User: <@${this.message.author.id}> weeab-level has been incremented by ${finalLevel}.`, this.message.channel);
+					}
+					return;
+				}
+
 			}
 	}
 }
