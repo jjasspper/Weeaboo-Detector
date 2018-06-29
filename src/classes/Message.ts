@@ -41,6 +41,7 @@ export class Message {
 	checkForWeeabShit(wordlist: any, whitelist: any): void {
 		const watchlist = new Watchlist();
 		const sendWordsArray = this.message.content.split(" ");
+
 		let finalLevel: number = 0;
 		let sendWordsArrayLength = sendWordsArray.length;
 

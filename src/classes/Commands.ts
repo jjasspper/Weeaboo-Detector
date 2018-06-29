@@ -1,6 +1,18 @@
 import {Guild} from "./Guild";
 import {Message} from "./Message";
 import {Bot} from "./Bot";
+import {Watchlist} from "./Watchlist";
+
+interface Data {
+	success: boolean;
+	data: [{
+		server: string;
+		user: string;
+		level: number;
+		userid: string;
+		isWhitelisted: number;
+	}];
+}
 
 export class Commands extends Bot {
 	private package = require('../../package.json');
@@ -51,7 +63,7 @@ export class Commands extends Bot {
 							break;
 						case secondParam === "kicklevel":
 							if (level > 0 && level < 999) {
-								guild.updateMaxBanLevel(msg.guild.id, level).then((result: any) => {
+								guild.updateMaxKickLevel(msg.guild.id, level).then((result: any) => {
 									Message.sendApiResponse(result, msg.channel);
 								}, (err) => {
 									console.log(err);
@@ -78,6 +90,18 @@ export class Commands extends Bot {
 					break;
 				case firstParam === "register":
 					guild.addServer(msg.guild.id, msg.guild.name);
+					break;
+				case firstParam === "weeablevel":
+					const watchlist = new Watchlist();
+					let userID = msg.mentions.users.values().next().value.id;
+
+					watchlist.getLevel(msg.guild.id, userID).then((result:string) => {
+						let response = JSON.parse(result);
+						let data = response.data[0];
+						Message.send(`The weeab-level of ${data.user} is ${data.level}`, msg.channel);
+					}, (err) => {
+						console.log(err);
+					});
 					break;
 				default:
 					Message.send("Command not found, use '!weeabot info' to list all commands.", msg.channel);

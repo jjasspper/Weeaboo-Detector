@@ -34,11 +34,11 @@ const
 
 client.on("ready", async () => {
 	try {
-		console.log('Initialising...');
+		console.log('Importing word and whitelist...');
 		wordlist = await words.retrieve();
-		console.log('Wordlist initialized.');
+		console.log('Wordlist imported.');
 		whitelist = await allowed.retrieve();
-		console.log('Whitelist initialized.');
+		console.log('Whitelist imported.');
 		bot.init();
 	} catch (e) {
 		throw new Error(e);

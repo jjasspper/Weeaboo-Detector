@@ -15,16 +15,12 @@ export class Watchlist extends Api {
 				}
 			}, (err, response, data) => {
 				if (err) {
-					reject(process.exit(err));
+					reject(err);
 				} else {
 					resolve(data);
 				}
 			})
 		});
-	}
-
-	whitelistUser(serverID, user) {
-
 	}
 
 	setWeeabLevel(serverID, userID) {
@@ -33,5 +29,20 @@ export class Watchlist extends Api {
 
 	updateUsername(serverID, userID, newName) {
 
+	}
+
+	getLevel(serverID, userID) {
+		return new Promise((resolve, reject) => {
+			this.request({
+				method: 'GET',
+				uri: this.apiUri + `/watchlist/users/level/${serverID}/${userID}`,
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			})
+		});
 	}
 }

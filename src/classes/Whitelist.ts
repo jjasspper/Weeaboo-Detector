@@ -27,7 +27,7 @@ export class Whitelist {
 		return new Promise((resolve, reject) => {
 			this.api.request({
 				method: 'POST',
-				uri: this.api.apiUri + "/whitelist/addUser",
+				uri: this.api.apiUri + "/whitelist/users/add",
 				json: true,
 				body: {
 					"serverID": serverID,
@@ -47,7 +47,7 @@ export class Whitelist {
 		return new Promise((resolve, reject) => {
 			this.api.request({
 				method: 'POST',
-				uri: this.api.apiUri + "/whitelist/removeUser",
+				uri: this.api.apiUri + "/whitelist/users/remove",
 				json: true,
 				body: {
 					"serverID": serverID,
