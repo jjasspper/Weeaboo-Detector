@@ -1,5 +1,15 @@
 import {Api} from "./api/Api";
 
+export interface ServerInfo {
+	id: number,
+	name: string,
+	date_created: string,
+	auth: string,
+	muteLimit: number,
+	kickLimit: number,
+	banLimit: number
+}
+
 export class Guild extends Api {
 
 	apiUri: string;
@@ -23,6 +33,37 @@ export class Guild extends Api {
 				}
 			});
 		});
+	}
+
+	getServer(id) {
+		return new Promise((resolve, reject) => {
+			this.request({
+				method: 'GET',
+				uri: `${this.apiUri}/servers/${id}`,
+				json: true
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			});
+		});
+	}
+
+	/**
+	 * Returns the mute, kick and banlevel in an array, in that order.
+	 * @param id
+	 */
+
+	getServerLevels(id) {
+		return new Promise(((resolve, reject) => {
+			this.getServer(id).then((result: ServerInfo) => {
+				resolve([result.muteLimit, result.kickLimit, result.banLimit]);
+			}, (err) => {
+				reject(err);
+			});
+		}));
 	}
 
 	removeServer(id: string) {
@@ -88,5 +129,4 @@ export class Guild extends Api {
 			});
 		});
 	}
-
 }
