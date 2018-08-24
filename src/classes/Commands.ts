@@ -6,6 +6,7 @@ import {Guild} from "./Guild";
 import {Message} from "./Message";
 import {Bot} from "./Bot";
 import {Watchlist} from "./Watchlist";
+import {Whitelist} from "./Whitelist";
 
 interface Data {
 	success: boolean;
@@ -65,7 +66,7 @@ export class Commands extends Bot {
 						When typing a command you should type the parameter without the {}, as these are only an indication of a parameter.
 					`)
 					.addField("info", `Lists info of this bot`)
-					.addField("whitelist {@user}", `Exludes a server member of being tracked by this bot. All previous stats will remain saved.`)
+					.addField("whitelist add {@user}", `Exludes a server member of being tracked by this bot. All previous stats will remain saved.`)
 					.addField("update mutelevel {number}", `Updates the maximum level a server member can have before being muted.`)
 					.addField("update kicklevel {number}", `Updates the maximum level a server member can have before being kicked.`)
 					.addField("update banlevel {number}", `Updates the maximum level a server member can have before being banned.`)
@@ -123,7 +124,7 @@ export class Commands extends Bot {
 					const watchlist = new Watchlist();
 					let userID = msg.mentions.users.values().next().value.id;
 
-					watchlist.getLevel(msg.guild.id, userID).then((result: string) => {
+					watchlist.getUser(msg.guild.id, userID).then((result: string) => {
 						let response = JSON.parse(result);
 						let data = response.data[0];
 						console.log(data);
@@ -135,6 +136,28 @@ export class Commands extends Bot {
 					}, (err) => {
 						console.log(err);
 					});
+					break;
+				case firstParam === "whitelist":
+					switch (true) {
+						case secondParam === "add":
+							let whiteList = new Whitelist();
+							let userID2 = msg.mentions.users.values().next().value.id;
+							whiteList.addUser(msg.guild.id, userID2).then((result) => {
+								if (result) {
+									Message.sendApiResponse(result, msg.channel);
+								}
+							});
+							break;
+						case secondParam === "remove":
+							let whiteList = new Whitelist();
+							let userID2 = msg.mentions.users.values().next().value.id;
+							whiteList.addUser(msg.guild.id, userID2).then((result) => {
+								if (result) {
+									Message.sendApiResponse(result, msg.channel);
+								}
+							});
+							break;
+					}
 					break;
 				default:
 					Message.send("Command not found, use '!weeabot commands' to list all commands.", msg.channel);

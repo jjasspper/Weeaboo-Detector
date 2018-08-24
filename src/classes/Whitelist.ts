@@ -37,7 +37,7 @@ export class Whitelist {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(JSON.parse(data));
+					resolve(data);
 				}
 			});
 		});
@@ -57,7 +57,7 @@ export class Whitelist {
 				if (err) {
 					reject(err);
 				} else {
-					resolve(JSON.parse(data));
+					resolve(data);
 				}
 			});
 		});
