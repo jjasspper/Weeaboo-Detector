@@ -1,7 +1,7 @@
 import {Api} from "./api/Api";
 
 export class Watchlist extends Api {
-	addUser(serverID, userID, level, userName): Promise<any> {
+	saveUser(serverID, userID, level, userName): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.request({
 				method: 'POST',
