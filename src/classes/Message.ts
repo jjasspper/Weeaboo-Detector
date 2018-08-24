@@ -83,8 +83,11 @@ export class Message {
 
 				if (sendWordsArrayLength === 0) {
 					if (finalLevel > 0) {
-						watchlist.addUser(this.message.guild.id, this.message.author.id, finalLevel, this.message.author.username);
-						Message.send(`Possible weeaboo detected. User: <@${this.message.author.id}> weeab-level has been incremented by ${finalLevel}.`, this.message.channel);
+						watchlist.addUser(this.message.guild.id, this.message.author.id, finalLevel, this.message.author.username).then(() => {
+							Message.send(`Possible weeaboo detected. User: <@${this.message.author.id}> weeab-level has been incremented by ${finalLevel}.`, this.message.channel);
+						}, (err) => {
+							Message.send(`Something went wrong. Error: ${err}`, this.message.channel);
+						});
 					}
 					return;
 				}
