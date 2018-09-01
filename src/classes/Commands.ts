@@ -87,7 +87,7 @@ export class Commands extends Bot {
 									console.log(err);
 								});
 							} else {
-								Message.send("Level is outside of the limit (not the manga) please try another level.", msg.channel);
+								Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
 							}
 							break;
 						case secondParam === "kicklevel":
@@ -98,7 +98,7 @@ export class Commands extends Bot {
 									console.log(err);
 								});
 							} else {
-								Message.send("Level is outside of the limit (not the manga) please try another level.", msg.channel);
+								Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
 							}
 							break;
 						case secondParam === "banlevel":
@@ -109,11 +109,11 @@ export class Commands extends Bot {
 									console.log(err);
 								});
 							} else {
-								Message.send("Level is outside of the limit (not the manga) please try another level.", msg.channel);
+								Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
 							}
 							break;
 						default:
-							Message.send("Command not found, use '!weeabot info' to list all commands.", msg.channel);
+							Message.send("Command not found, use '!weeabot commands' to list all commands.", msg.channel);
 							break;
 					}
 					break;
@@ -138,9 +138,9 @@ export class Commands extends Bot {
 					});
 					break;
 				case firstParam === "whitelist":
+					let whiteList = new Whitelist();
 					switch (true) {
 						case secondParam === "add":
-							let whiteList = new Whitelist();
 							let userID2 = msg.mentions.users.values().next().value.id;
 							whiteList.addUser(msg.guild.id, userID2).then((result) => {
 								if (result) {
@@ -149,9 +149,8 @@ export class Commands extends Bot {
 							});
 							break;
 						case secondParam === "remove":
-							let whiteList = new Whitelist();
-							let userID2 = msg.mentions.users.values().next().value.id;
-							whiteList.addUser(msg.guild.id, userID2).then((result) => {
+							let userID3 = msg.mentions.users.values().next().value.id;
+							whiteList.removeUser(msg.guild.id, userID3).then((result) => {
 								if (result) {
 									Message.sendApiResponse(result, msg.channel);
 								}
