@@ -158,6 +158,14 @@ export class Commands extends Bot {
 							break;
 					}
 					break;
+				case firstParam === "crole":
+					msg.guild.createRole({
+						name: "Muted weeabs by Weeabot",
+						color: 0xa400ff,
+						permissions: 0x10000,
+						mentionable: true
+					});
+					break;
 				default:
 					Message.send("Command not found, use '!weeabot commands' to list all commands.", msg.channel);
 					break;

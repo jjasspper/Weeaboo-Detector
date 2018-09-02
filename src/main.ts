@@ -51,6 +51,12 @@ client.on("ready", async () => {
 
 client.on("guildCreate", guild => {
 	guild.addServer(guild.id, guild.name);
+	guild.createRole({
+		name: "Muted Weeabs",
+		color: 0xa400ff,
+		permissions: 0x10000,
+		mentionable: true
+	});
 });
 
 /**

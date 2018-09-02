@@ -84,7 +84,7 @@ export class Message {
 				if (sendWordsArrayLength === 0) {
 					if (finalLevel > 0) {
 						watchlist.saveUser(this.message.guild.id, this.message.author.id, finalLevel, this.message.author.username).then(() => {
-							Watchlist.checkWeeabLevel(this.message.guild.id, this.message.author.id, this.message.channel, finalLevel);
+							Watchlist.checkWeeabLevel(this.message.guild.id, this.message.author.id, this.message.channel, finalLevel, this.message);
 						}, (err) => {
 							Message.send(`Something went wrong. Error: ${err}`, this.message.channel);
 						});
