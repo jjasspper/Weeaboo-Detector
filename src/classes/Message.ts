@@ -20,7 +20,7 @@ export class Message {
 		channel.send(content)
 	}
 
-	static sendApiResponse(data: Data, channel: any) {
+	static sendApiResponse(data, channel: any) {
 		if (data.success) {
 			Message.send(data.message, channel);
 		} else {

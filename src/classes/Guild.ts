@@ -15,6 +15,27 @@ export class Guild extends Api {
 	apiUri: string;
 	request: any;
 
+	registerRole(roleID, serverID) {
+		return new Promise((resolve, reject) => {
+			this.request({
+				method: 'POST',
+				uri: this.apiUri + "/servers/addrole",
+				json: true,
+				body: {
+					"roleID": roleID,
+					"serverID": serverID
+				}
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log(roleID);
+					resolve(data);
+				}
+			});
+		});
+	}
+
 	addServer(id: string, name: string): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.request({

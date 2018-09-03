@@ -7,17 +7,7 @@ import {Message} from "./Message";
 import {Bot} from "./Bot";
 import {Watchlist} from "./Watchlist";
 import {Whitelist} from "./Whitelist";
-
-interface Data {
-	success: boolean;
-	data: [{
-		server: string;
-		user: string;
-		level: number;
-		userid: string;
-		isWhitelisted: number;
-	}];
-}
+import {IWatchlistData} from "../interfaces/IWatchlistData";
 
 export class Commands extends Bot {
 	private package = require('../../package.json');
@@ -160,10 +150,19 @@ export class Commands extends Bot {
 					break;
 				case firstParam === "crole":
 					msg.guild.createRole({
-						name: "Muted weeabs by Weeabot",
+						name: "Muted Weeabs",
 						color: 0xa400ff,
 						permissions: 0x10000,
 						mentionable: true
+					}).then((role) => {
+						let guild = new Guild();
+						guild.registerRole(role.id, msg.guild.id).then((response) => {
+							console.log(response);
+							console.log(role.id);
+							Message.sendApiResponse(response, msg.channel);
+						});
+					}, (exception) => {
+						console.log(exception);
 					});
 					break;
 				default:

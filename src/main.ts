@@ -3,6 +3,7 @@ import {Bot} from "./classes/Bot";
 import {Wordlist} from "./classes/Wordlist";
 import {Commands} from "./classes/Commands";
 import {Whitelist} from "./classes/Whitelist";
+import {Guild} from "./classes/Guild";
 
 /**
  * Loading in npm packages file
@@ -56,6 +57,9 @@ client.on("guildCreate", guild => {
 		color: 0xa400ff,
 		permissions: 0x10000,
 		mentionable: true
+	}).then((role) => {
+		console.log(role);
+		//Guild.registerRole();
 	});
 });
 
