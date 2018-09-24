@@ -27,7 +27,8 @@ const
 	client = new Discord.Client(),
 	bot = new Bot(client),
 	words = new Wordlist(),
-	allowed = new Whitelist();
+	allowed = new Whitelist(),
+	config = require('../config.json');
 
 /**
  * Do things when bot is ready
@@ -50,7 +51,7 @@ client.on("ready", async () => {
  * Do things when bot joins a server
  */
 
-client.on("guildCreate", guild => {
+client.on("guildCreate", (guild) => {
 	guild.addServer(guild.id, guild.name);
 	guild.createRole({
 		name: "Muted Weeabs",
@@ -67,7 +68,7 @@ client.on("guildCreate", guild => {
  * Do things when a message is send
  */
 
-client.on("message", msg => {
+client.on("message", (msg) => {
 	if (msg.author.equals(client.user)) return;
 
 	const message = new Message(msg);

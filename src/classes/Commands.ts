@@ -7,7 +7,7 @@ import {Message} from "./Message";
 import {Bot} from "./Bot";
 import {Watchlist} from "./Watchlist";
 import {Whitelist} from "./Whitelist";
-import {IWatchlistData} from "../interfaces/IWatchlistData";
+import {IUserData} from "../interfaces/IUserData";
 
 export class Commands extends Bot {
 	private package = require('../../package.json');
@@ -37,14 +37,6 @@ export class Commands extends Bot {
 					.setFooter("© JVH 2018")
 					.setThumbnail(this.client.user.avatarURL);
 					Message.send({embed}, msg.channel);
-					break;
-				case firstParam === "getThisServerLevel":
-					guild.getServerLevels(msg.guild.id).then((result) => {
-						console.log(result);
-					});
-					break;
-				case firstParam === "serverid":
-					console.log(msg.guild.id);
 					break;
 				case firstParam === "commands":
 					let commandEmbed = new Discord.RichEmbed()

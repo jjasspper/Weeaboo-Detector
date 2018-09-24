@@ -36,6 +36,12 @@ export class Guild extends Api {
 		});
 	}
 
+	/**
+	 * Registers a new guild
+	 * @param id
+	 * @param name
+	 */
+
 	addServer(id: string, name: string): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.request({
@@ -55,6 +61,11 @@ export class Guild extends Api {
 			});
 		});
 	}
+
+	/**
+	 * Return serverdate
+	 * @param id
+	 */
 
 	getServer(id) {
 		return new Promise((resolve, reject) => {
@@ -87,9 +98,20 @@ export class Guild extends Api {
 		}));
 	}
 
+	/**
+	 * Removes a guild
+	 * @param id
+	 */
+
 	removeServer(id: string) {
 
 	}
+
+	/**
+	 * Updated a servers mute level
+	 * @param serverID
+	 * @param level
+	 */
 
 	updateMaxMuteLevel(serverID, level) {
 		return new Promise((resolve, reject) => {
@@ -111,6 +133,12 @@ export class Guild extends Api {
 		});
 	}
 
+	/**
+	 * Updated a servers kick level
+	 * @param serverID
+	 * @param level
+	 */
+
 	updateMaxKickLevel(serverID, level) {
 		return new Promise((resolve, reject) => {
 			this.request({
@@ -130,6 +158,12 @@ export class Guild extends Api {
 			});
 		});
 	}
+
+	/**
+	 * Updated a servers ban level
+	 * @param serverID
+	 * @param level
+	 */
 
 	updateMaxBanLevel(serverID, level) {
 		return new Promise((resolve, reject) => {

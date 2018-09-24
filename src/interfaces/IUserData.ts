@@ -1,4 +1,4 @@
-export interface IWatchlistData {
+export interface IUserData {
 	success: boolean;
 	data: [{
 		server: string;
