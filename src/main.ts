@@ -54,9 +54,9 @@ client.on("ready", async () => {
 client.on("guildCreate", (guild) => {
 	guild.addServer(guild.id, guild.name);
 	guild.createRole({
-		name: "Muted Weeabs",
+		name: "Weeaboo",
 		color: 0xa400ff,
-		permissions: 0x10000,
+		permissions: 0x400,
 		mentionable: true
 	}).then((role) => {
 		console.log(role);

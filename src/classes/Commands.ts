@@ -7,7 +7,6 @@ import {Message} from "./Message";
 import {Bot} from "./Bot";
 import {Watchlist} from "./Watchlist";
 import {Whitelist} from "./Whitelist";
-import {IUserData} from "../interfaces/IUserData";
 
 export class Commands extends Bot {
 	private package = require('../../package.json');
@@ -24,6 +23,7 @@ export class Commands extends Bot {
 			let firstParam = allWordsInMessage[1];
 			let secondParam = allWordsInMessage[2];
 			let thirdParam = allWordsInMessage[3];
+			const senderIsAdmin = msg.channel.permissionsFor(msg.member).has("ADMINISTRATOR");
 
 			switch (true) {
 				case firstParam === "info":
@@ -48,7 +48,7 @@ export class Commands extends Bot {
 						When typing a command you should type the parameter without the {}, as these are only an indication of a parameter.
 					`)
 					.addField("info", `Lists info of this bot`)
-					.addField("whitelist add {@user}", `Exludes a server member of being tracked by this bot. All previous stats will remain saved.`)
+					.addField("whitelist add/remove {@user}", `Exludes a server member of being tracked by this bot. All previous stats will remain saved.`)
 					.addField("update mutelevel {number}", `Updates the maximum level a server member can have before being muted.`)
 					.addField("update kicklevel {number}", `Updates the maximum level a server member can have before being kicked.`)
 					.addField("update banlevel {number}", `Updates the maximum level a server member can have before being banned.`)
@@ -58,45 +58,48 @@ export class Commands extends Bot {
 					Message.send(commandEmbed, msg.channel);
 					break;
 				case firstParam === "update":
-					let level: number = parseInt(thirdParam);
-
-					switch (true) {
-						case secondParam === "mutelevel":
-							if (level > 0 && level < 999) {
-								guild.updateMaxMuteLevel(msg.guild.id, level).then((result: any) => {
-									Message.sendApiResponse(result, msg.channel);
-								}, (err) => {
-									console.log(err);
-								});
-							} else {
-								Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
-							}
-							break;
-						case secondParam === "kicklevel":
-							if (level > 0 && level < 999) {
-								guild.updateMaxKickLevel(msg.guild.id, level).then((result: any) => {
-									Message.sendApiResponse(result, msg.channel);
-								}, (err) => {
-									console.log(err);
-								});
-							} else {
-								Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
-							}
-							break;
-						case secondParam === "banlevel":
-							if (level > 0 && level < 999) {
-								guild.updateMaxBanLevel(msg.guild.id, level).then((result: any) => {
-									Message.sendApiResponse(result, msg.channel);
-								}, (err) => {
-									console.log(err);
-								});
-							} else {
-								Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
-							}
-							break;
-						default:
-							Message.send("Command not found, use '!weeabot commands' to list all commands.", msg.channel);
-							break;
+					if (senderIsAdmin) {
+						let level: number = parseInt(thirdParam);
+						switch (true) {
+							case secondParam === "mutelevel":
+								if (level > 0 && level < 999) {
+									guild.updateMaxMuteLevel(msg.guild.id, level).then((result: any) => {
+										Message.sendApiResponse(result, msg.channel);
+									}, (err) => {
+										console.log(err);
+									});
+								} else {
+									Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
+								}
+								break;
+							case secondParam === "kicklevel":
+								if (level > 0 && level < 999) {
+									guild.updateMaxKickLevel(msg.guild.id, level).then((result: any) => {
+										Message.sendApiResponse(result, msg.channel);
+									}, (err) => {
+										console.log(err);
+									});
+								} else {
+									Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
+								}
+								break;
+							case secondParam === "banlevel":
+								if (level > 0 && level < 999) {
+									guild.updateMaxBanLevel(msg.guild.id, level).then((result: any) => {
+										Message.sendApiResponse(result, msg.channel);
+									}, (err) => {
+										console.log(err);
+									});
+								} else {
+									Message.send("The entered level is invalid. The maximum level is 999", msg.channel);
+								}
+								break;
+							default:
+								Message.send("Command not found, use '!weeabot commands' to list all commands.", msg.channel);
+								break;
+						}
+					} else {
+						Message.send("Only admins can run this command.", msg.channel);
 					}
 					break;
 				case firstParam === "register":
@@ -120,42 +123,53 @@ export class Commands extends Bot {
 					});
 					break;
 				case firstParam === "whitelist":
-					let whiteList = new Whitelist();
-					switch (true) {
-						case secondParam === "add":
-							let userID2 = msg.mentions.users.values().next().value.id;
-							whiteList.addUser(msg.guild.id, userID2).then((result) => {
-								if (result) {
-									Message.sendApiResponse(result, msg.channel);
-								}
-							});
-							break;
-						case secondParam === "remove":
-							let userID3 = msg.mentions.users.values().next().value.id;
-							whiteList.removeUser(msg.guild.id, userID3).then((result) => {
-								if (result) {
-									Message.sendApiResponse(result, msg.channel);
-								}
-							});
-							break;
+					if(senderIsAdmin) {
+						let whiteList = new Whitelist();
+						switch (true) {
+							case secondParam === "add":
+								let userID2 = msg.mentions.users.values().next().value.id;
+								whiteList.addUser(msg.guild.id, userID2).then((result) => {
+									if (result) {
+										Message.sendApiResponse(result, msg.channel);
+									}
+								});
+								break;
+							case secondParam === "remove":
+								let userID3 = msg.mentions.users.values().next().value.id;
+								whiteList.removeUser(msg.guild.id, userID3).then((result) => {
+									if (result) {
+										Message.sendApiResponse(result, msg.channel);
+									}
+								});
+								break;
+						}
+					} else {
+						Message.send("Only admins can run this command.", msg.channel);
 					}
 					break;
 				case firstParam === "crole":
-					msg.guild.createRole({
-						name: "Muted Weeabs",
-						color: 0xa400ff,
-						permissions: 0x10000,
-						mentionable: true
-					}).then((role) => {
-						let guild = new Guild();
-						guild.registerRole(role.id, msg.guild.id).then((response) => {
-							console.log(response);
-							console.log(role.id);
-							Message.sendApiResponse(response, msg.channel);
+					if (senderIsAdmin) {
+						msg.guild.createRole({
+							name: "Muted Weeabs",
+							color: 0xa400ff,
+							permissions: 0x10000,
+							mentionable: true
+						}).then((role) => {
+							let guild = new Guild();
+							guild.registerRole(role.id, msg.guild.id).then((response) => {
+								console.log(response);
+								console.log(role.id);
+								Message.sendApiResponse(response, msg.channel);
+							});
+						}, (exception) => {
+							console.log(exception);
 						});
-					}, (exception) => {
-						console.log(exception);
-					});
+					} else {
+						Message.send("Only admins can run this command.", msg.channel);
+					}
+					break;
+				case firstParam === "isAdmin" :
+					console.log(senderIsAdmin);
 					break;
 				default:
 					Message.send("Command not found, use '!weeabot commands' to list all commands.", msg.channel);
