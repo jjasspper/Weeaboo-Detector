@@ -1,4 +1,5 @@
 import {Api} from "./api/Api";
+import {Message} from "./Message";
 
 export interface ServerInfo {
 	id: number,
@@ -14,6 +15,12 @@ export class Guild extends Api {
 
 	apiUri: string;
 	request: any;
+
+	/**
+	 * Registers the server assigned role to the database
+	 * @param roleID
+	 * @param serverID
+	 */
 
 	registerRole(roleID, serverID) {
 		return new Promise((resolve, reject) => {
@@ -33,6 +40,32 @@ export class Guild extends Api {
 					resolve(data);
 				}
 			});
+		});
+	}
+
+	roleExistsOrGenerate(msg, roleID) {
+		return new Promise((resolve, reject) => {
+			let role : string = msg.guild.roles.get(roleID);
+
+			if(role) {
+				console.log('Role exists');
+				resolve(roleID);
+			} else {
+				msg.guild.createRole({
+					name: "Weeaboo",
+					color: 0xa400ff,
+					permissions: 0x400,
+					mentionable: true
+				}).then((role) => {
+					let guild = new Guild();
+					guild.registerRole(role.id, msg.guild.id).then((response) => {
+						Message.sendApiResponse(response, msg.channel);
+						resolve(role.id);
+					});
+				}, (exception) => {
+					reject(exception);
+				});
+			}
 		});
 	}
 

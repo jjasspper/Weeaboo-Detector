@@ -150,9 +150,9 @@ export class Commands extends Bot {
 				case firstParam === "crole":
 					if (senderIsAdmin) {
 						msg.guild.createRole({
-							name: "Muted Weeabs",
+							name: "Weeaboo",
 							color: 0xa400ff,
-							permissions: 0x10000,
+							permissions: 0x400,
 							mentionable: true
 						}).then((role) => {
 							let guild = new Guild();
@@ -170,6 +170,10 @@ export class Commands extends Bot {
 					break;
 				case firstParam === "isAdmin" :
 					console.log(senderIsAdmin);
+					break;
+				case firstParam === "hasRole" :
+					let guild2 = new Guild();
+					guild2.roleExistsOrGenerate(msg, "495733326162952210");
 					break;
 				default:
 					Message.send("Command not found, use '!weeabot commands' to list all commands.", msg.channel);

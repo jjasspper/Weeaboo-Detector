@@ -51,16 +51,17 @@ client.on("ready", async () => {
  * Do things when bot joins a server
  */
 
-client.on("guildCreate", (guild) => {
-	guild.addServer(guild.id, guild.name);
-	guild.createRole({
+client.on("guildCreate", (server) => {
+	let guild = new Guild();
+	guild.addServer(server.id, server.name);
+	server.createRole({
 		name: "Weeaboo",
 		color: 0xa400ff,
 		permissions: 0x400,
 		mentionable: true
 	}).then((role) => {
 		console.log(role);
-		//Guild.registerRole();
+		guild.registerRole(role.id, server.id);
 	});
 });
 
