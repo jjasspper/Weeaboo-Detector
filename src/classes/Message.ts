@@ -63,13 +63,13 @@ export class Message {
 
 					let whitelistLength = whitelist.length;
 
-					if (sendWordLength > blockedWordLength) {
-						continue;
-					}
-
 					while (whitelistLength--) {
 						let item = whitelist[whitelistLength];
 						let listedWord = item.word;
+
+						if (sendWordLength > listedWord.length) {
+							continue;
+						}
 
 						if (sendWord.includes(listedWord)) {
 							continue mainLoop;
