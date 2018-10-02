@@ -43,6 +43,14 @@ export class Guild extends Api {
 		});
 	}
 
+	/**
+	 * Checks if a role exists. If not, it will generate one
+	 *
+	 * @param msg
+	 * @param roleID
+	 */
+
+
 	roleExistsOrGenerate(msg, roleID) {
 		return new Promise((resolve, reject) => {
 			let role : string = msg.guild.roles.get(roleID);
@@ -96,7 +104,7 @@ export class Guild extends Api {
 	}
 
 	/**
-	 * Return serverdate
+	 * Return server data
 	 * @param id
 	 */
 

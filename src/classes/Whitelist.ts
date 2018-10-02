@@ -8,6 +8,10 @@ export class Whitelist {
 		this.api = new Api();
 	}
 
+	/**
+	 * Retrieves the current whitelisted words
+	 */
+
 	retrieve(): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.api.request({
@@ -22,6 +26,13 @@ export class Whitelist {
 			});
 		})
 	}
+
+	/**
+	 * Adds a user to the whitelist
+	 *
+	 * @param serverID
+	 * @param userID
+	 */
 
 	addUser(serverID, userID): Promise<any> {
 		return new Promise((resolve, reject) => {
@@ -42,6 +53,13 @@ export class Whitelist {
 			});
 		});
 	}
+
+	/**
+	 * Removes a user from the watchlist
+	 *
+	 * @param serverID
+	 * @param userID
+	 */
 
 	removeUser(serverID, userID): Promise<any> {
 		return new Promise((resolve, reject) => {

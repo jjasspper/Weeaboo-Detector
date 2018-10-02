@@ -7,7 +7,7 @@ interface Data {
 }
 
 export class Message {
-	private message: any;
+	readonly message: any;
 	private author: any;
 	private gluedContent: string;
 
@@ -16,9 +16,23 @@ export class Message {
 		this.gluedContent = this.message.content.replace(/\s+/g, '');
 	}
 
+	/**
+	 * Sends a message to a channel
+	 *
+	 * @param content
+	 * @param channel
+	 */
+
 	static send(content: any, channel: any): void {
 		channel.send(content)
 	}
+
+	/**
+	 * Sends a messaged based on a parsed API response
+	 *
+	 * @param data
+	 * @param channel
+	 */
 
 	static sendApiResponse(data, channel: any) {
 		if (data.success) {
@@ -38,6 +52,13 @@ export class Message {
 		}
 	}
 
+	/**
+	 * Checks if a message contains weeab stuff. Runs every time a chat message is sent.
+	 *
+	 * @param wordlist
+	 * @param whitelist
+	 */
+
 	checkForWeeabShit(wordlist: any, whitelist: any): void {
 		const watchlist = new Watchlist();
 		const sendWordsArray = this.message.content.split(" ");
@@ -53,21 +74,17 @@ export class Message {
 
 				while (wordlistLength--) {
 					let blockedWordObj = wordlist[wordlistLength];
-
 					let blockedWord: string = blockedWordObj.word;
 					let blockedWordLevel: number = blockedWordObj.level;
-					let blockedWordLength: number = blockedWord.length;
 
 					let sendWord: string = sendWordsArray[sendWordsArrayLength];
-					let sendWordLength: number = sendWord.length;
-
 					let whitelistLength = whitelist.length;
 
 					while (whitelistLength--) {
 						let item = whitelist[whitelistLength];
 						let listedWord = item.word;
 
-						if (sendWordLength > listedWord.length) {
+						if (sendWord.length > listedWord.length) {
 							continue;
 						}
 
@@ -91,7 +108,6 @@ export class Message {
 					}
 					return;
 				}
-
 			}
 	}
 }

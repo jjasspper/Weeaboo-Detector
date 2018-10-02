@@ -18,8 +18,4 @@ export class Bot {
 	getClient() {
 		return this.client;
 	}
-
-	registerRole(roleID) {
-
-	}
 }

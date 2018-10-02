@@ -19,10 +19,10 @@ export class Commands extends Bot {
 		if (content.includes(this.config.prefix)) {
 			const guild = new Guild();
 
-			let allWordsInMessage = content.split(" ");
-			let firstParam = allWordsInMessage[1];
-			let secondParam = allWordsInMessage[2];
-			let thirdParam = allWordsInMessage[3];
+			const allWordsInMessage = content.split(" ");
+			const firstParam = allWordsInMessage[1];
+			const secondParam = allWordsInMessage[2];
+			const thirdParam = allWordsInMessage[3];
 			const senderIsAdmin = msg.channel.permissionsFor(msg.member).has("ADMINISTRATOR");
 
 			switch (true) {
