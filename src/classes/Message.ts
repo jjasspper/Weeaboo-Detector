@@ -59,7 +59,7 @@ export class Message {
 	 * @param whitelist
 	 */
 
-	checkForWeeabShit(wordlist: any, whitelist: any): void {
+	checkForWeebShit(wordlist: any, whitelist: any): void {
 		const watchlist = new Watchlist();
 		const sendWordsArray = this.message.content.split(" ");
 

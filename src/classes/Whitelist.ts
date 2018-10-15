@@ -2,6 +2,7 @@ import {Api} from "./api/Api";
 
 export class Whitelist {
 
+	// Houses the api class
 	private api;
 
 	constructor() {

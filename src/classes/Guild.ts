@@ -53,9 +53,9 @@ export class Guild extends Api {
 
 	roleExistsOrGenerate(msg, roleID) {
 		return new Promise((resolve, reject) => {
-			let role : string = msg.guild.roles.get(roleID);
+			let role: string = msg.guild.roles.get(roleID);
 
-			if(role) {
+			if (role) {
 				console.log('Role exists');
 				resolve(roleID);
 			} else {

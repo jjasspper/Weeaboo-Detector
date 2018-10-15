@@ -2,6 +2,7 @@ import {Api} from "./api/Api";
 
 export class Wordlist {
 
+	// Houses the api class
 	private api;
 
 	constructor() {

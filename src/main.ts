@@ -75,7 +75,7 @@ client.on("message", (msg) => {
 	const message = new Message(msg);
 	const commands = new Commands(client);
 
-	message.checkForWeeabShit(wordlist, whitelist);
+	message.checkForWeebShit(wordlist, whitelist);
 	commands.parse(msg, msg.content)
 });
 
@@ -101,7 +101,7 @@ client.on("guildUpdate", (oldServer, newServer) => {
 
 client.on("messageUpdate", (oldMessage, newMessage) => {
 	const message = new Message(newMessage);
-	message.checkForWeeabShit(wordlist, whitelist);
+	message.checkForWeebShit(wordlist, whitelist);
 });
 
 

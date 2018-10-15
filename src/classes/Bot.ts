@@ -7,7 +7,7 @@ export class Bot {
 	}
 
 	init(): void {
-		this.client.user.setActivity("with weeabs");
+		this.client.user.setActivity("with weebs");
 		this.client.user.setUsername("Weeabo Detector");
 
 		console.log("--------------------------------------------------------------");

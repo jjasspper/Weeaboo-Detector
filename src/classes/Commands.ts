@@ -52,7 +52,7 @@ export class Commands extends Bot {
 					.addField("update mutelimit {number}", `Updates the maximum level a server member can have before being muted.`)
 					.addField("update kicklimit {number}", `Updates the maximum level a server member can have before being kicked.`)
 					.addField("update banlimit {number}", `Updates the maximum level a server member can have before being banned.`)
-					.addField("weeablevel {@user}", `Gets the weeablevel of the mentioned server member. Only the first mention will be used.`)
+					.addField("weeblevel {@user}", `Gets the weeblevel of the mentioned server member. Only the first mention will be used.`)
 					.setFooter("© JVH 2018")
 					.setThumbnail(this.client.user.avatarURL);
 					Message.send(commandEmbed, msg.channel);
@@ -102,7 +102,7 @@ export class Commands extends Bot {
 						Message.send("Only admins can run this command.", msg.channel);
 					}
 					break;
-				case firstParam === "weeablevel":
+				case firstParam === "weeblevel":
 					const watchlist = new Watchlist();
 					let userID = msg.mentions.users.values().next().value.id;
 
@@ -111,7 +111,7 @@ export class Commands extends Bot {
 						let data = response.data[0];
 						console.log(data);
 						if (data) {
-							Message.send(`The weeab-level of ${data.user} is ${data.level}`, msg.channel);
+							Message.send(`The weeb-level of ${data.user} is ${data.level}`, msg.channel);
 						} else {
 							Message.send(`The mentioned user has no tracked stats.`, msg.channel);
 						}
@@ -144,7 +144,7 @@ export class Commands extends Bot {
 						Message.send("Only admins can run this command.", msg.channel);
 					}
 					break;
-				case firstParam === "reset" && secondParam === "weeablevel":
+				case firstParam === "reset" && secondParam === "weeblevel":
 					if (senderIsAdmin) {
 						let watchlist = new Watchlist();
 						watchlist.resetUserLevel(msg.guild.id, msg.mentions.users.values().next().value.id).then((data) => {
