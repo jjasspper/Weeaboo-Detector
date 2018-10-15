@@ -225,4 +225,15 @@ export class Guild extends Api {
 			});
 		});
 	}
+
+	/**
+	 * Checks if a user is admin
+	 * @param userID
+	 * @param channel
+	 * @return boolean
+	 */
+
+	userIsAdmin(userID, channel) {
+		return channel.permissionsFor(userID).has("ADMINISTRATOR");
+	}
 }

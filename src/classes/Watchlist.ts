@@ -89,17 +89,18 @@ export class Watchlist extends Api {
 			})
 		}))
 	}
+
 	/**
 	 * Checks if a message contains blacklisted words
 	 *
 	 * @param serverID
 	 * @param userID
-	 * @param channel
+	 * @param blockedWord
 	 * @param finalLevel
 	 * @param message
 	 */
 
-	static checkWeeabLevel(serverID, userID, channel, finalLevel, message) {
+	static checkWeeabLevel(serverID, userID, saidBlockedWords, finalLevel, message) {
 		let guild = new Guild();
 		let watchlist = new Watchlist();
 		let serverLimits;
@@ -122,23 +123,26 @@ export class Watchlist extends Api {
 								const guild = new Guild();
 								guild.getServer(message.guild.id).then((result: IServerData) => {
 									guild.roleExistsOrGenerate(message, result.generated_role_id.toString()).then((roleID) => {
+										if (!member.roles.has(roleID)) {
+											Message.send(`User: <@${userID}> has reached the first stage of a weeaboo. The Weeaboo rank has been assigned to it.`, message.channel);
+										}
+										Message.send(`Weeaboo detected! User: <@${userID}> weeb-level has been incremented by ${finalLevel}, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 										member.addRole(roleID);
-										Message.send(`User: <@${userID}> has now reached the first stage of a weeaboo. For your safety it has been put in the muted weeabs group.`, channel);
 									}, (error) => {
-										Message.send(`An error occurred: ${error}`, channel);
+										Message.send(`An error occurred: ${error}`, message.channel);
 									});
 								});
 								break;
 							case user.level >= serverLimits[1] && user.level < serverLimits[2]:
 								member.kick('You are slowly turning into a weeaboo, we had to take precautions.');
-								Message.send(`User: <@${userID}> has reached a dangerous weeab-level. For your mental stability it has been kicked from this server.`, channel);
+								Message.send(`User: <@${userID}> has reached a dangerous weeb-level. For your mental stability it has been kicked from this server, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 								break;
 							case user.level >= serverLimits[2] :
-								member.ban(["Your weeab-levels have risen to an unbelievable height. For the servers sake you have been banned."]);
-								Message.send(`User: <@${userID}> has completely lost it and went full weeab-mode. To prevent further sickness to spread this user has been banned.`, channel);
+								member.ban(["Your weeb-levels have risen to an unbelievable height. For the servers' sake you have been banned."]);
+								Message.send(`User: <@${userID}> has completely lost it and went full weeb-mode. To prevent further sickness to spread this user has been banned, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 								break;
 							default :
-								Message.send(`Possible weeaboo detected. User: <@${userID}> weeab-level has been incremented by ${finalLevel}.`, channel);
+								Message.send(`Possible weeaboo detected! User: <@${userID}> weeb-level has been incremented by ${finalLevel}, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 						}
 					}, (err) => {
 						console.log(err);

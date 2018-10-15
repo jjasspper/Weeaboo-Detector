@@ -71,6 +71,7 @@ export class Message {
 			while (sendWordsArrayLength--) {
 
 				let wordlistLength = wordlist.length;
+				let saidBlockedWords = [];
 
 				while (wordlistLength--) {
 					let blockedWordObj = wordlist[wordlistLength];
@@ -95,13 +96,14 @@ export class Message {
 
 					if (sendWord.includes(blockedWord) || this.gluedContent.includes(blockedWord)) {
 						finalLevel += blockedWordLevel;
+						saidBlockedWords.push(blockedWord)
 					}
 				}
 
 				if (sendWordsArrayLength === 0) {
 					if (finalLevel > 0) {
 						watchlist.saveUser(this.message.guild.id, this.message.author.id, finalLevel, this.message.author.username).then(() => {
-							Watchlist.checkWeeabLevel(this.message.guild.id, this.message.author.id, this.message.channel, finalLevel, this.message);
+							Watchlist.checkWeeabLevel(this.message.guild.id, this.message.author.id, saidBlockedWords.join(', '), finalLevel, this.message);
 						}, (err) => {
 							Message.send(`Something went wrong. Error: ${err}`, this.message.channel);
 						});
