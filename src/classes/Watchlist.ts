@@ -37,19 +37,8 @@ export class Watchlist extends Api {
 	}
 
 	/**
-	 * Changes the weeab-level for a user
-	 *
-	 * @param serverID
-	 * @param userID
-	 */
-
-	setWeeabLevel(serverID, userID) {
-
-	}
-
-	/**
 	 * Updates a username
-	 *
+	 *@todo
 	 * @param serverID
 	 * @param userID
 	 * @param newName
@@ -81,8 +70,27 @@ export class Watchlist extends Api {
 		});
 	}
 
+	resetUserLevel(serverID, userID) {
+		return new Promise(((resolve, reject) => {
+			this.request({
+				method: 'PUT',
+				uri: this.apiUri + "/watchlist/users/reset",
+				json: true,
+				body: {
+					"serverID": serverID,
+					"userID": userID
+				}
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			})
+		}))
+	}
 	/**
-	 * Checks if a use
+	 * Checks if a message contains blacklisted words
 	 *
 	 * @param serverID
 	 * @param userID
