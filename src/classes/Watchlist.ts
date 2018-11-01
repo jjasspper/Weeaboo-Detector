@@ -70,6 +70,13 @@ export class Watchlist extends Api {
 		});
 	}
 
+	/**
+	 * Resets a users weeb-level
+	 *
+	 * @param serverID
+	 * @param userID
+	 */
+
 	resetUserLevel(serverID, userID) {
 		return new Promise(((resolve, reject) => {
 			this.request({
@@ -95,12 +102,12 @@ export class Watchlist extends Api {
 	 *
 	 * @param serverID
 	 * @param userID
-	 * @param blockedWord
+	 * @param saidBlockedWords
 	 * @param finalLevel
 	 * @param message
 	 */
 
-	static checkWeeabLevel(serverID, userID, saidBlockedWords, finalLevel, message) {
+	static checkWeebLevel(serverID, userID, saidBlockedWords, finalLevel, message) {
 		let guild = new Guild();
 		let watchlist = new Watchlist();
 		let serverLimits;
@@ -150,9 +157,10 @@ export class Watchlist extends Api {
 					});
 				}
 			} else {
-				return;
+				message.channel.send('Something went wrong while trying to get user-data.');
 			}
 		}, (err) => {
+			Message.sendApiResponse(err, message.channel);
 			console.log(err);
 			return;
 		});
