@@ -2,10 +2,10 @@
  * This code is one big mess, until I find a cleaner way to handle commands, it will stay like this.
  */
 
-import {Guild} from "./Guild";
+import {GuildHandler} from "./GuildHandler";
 import {Message} from "./Message";
 import {Bot} from "./Bot";
-import {Watchlist} from "./Watchlist";
+import {WatchlistHandler} from "./WatchlistHandler";
 import {Whitelist} from "./Whitelist";
 
 export class Commands extends Bot {
@@ -17,7 +17,7 @@ export class Commands extends Bot {
 		const Discord = require('discord.js');
 
 		if (content.includes(this.config.prefix)) {
-			const guild = new Guild();
+			const guild = new GuildHandler();
 
 			const allWordsInMessage = content.split(" ");
 			const firstParam = allWordsInMessage[1];
@@ -103,7 +103,7 @@ export class Commands extends Bot {
 					}
 					break;
 				case firstParam === "weeblevel":
-					const watchlist = new Watchlist();
+					const watchlist = new WatchlistHandler();
 					let userID = msg.mentions.users.values().next().value.id;
 
 					watchlist.getUser(msg.guild.id, userID).then((result: string) => {
@@ -146,7 +146,7 @@ export class Commands extends Bot {
 					break;
 				case firstParam === "reset" && secondParam === "weeblevel":
 					if (senderIsAdmin) {
-						let watchlist = new Watchlist();
+						let watchlist = new WatchlistHandler();
 						watchlist.resetUserLevel(msg.guild.id, msg.mentions.users.values().next().value.id).then((data) => {
 							Message.sendApiResponse(data, msg.channel);
 						}, (err) => {

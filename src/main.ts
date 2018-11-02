@@ -3,7 +3,8 @@ import {Bot} from "./classes/Bot";
 import {Wordlist} from "./classes/Wordlist";
 import {Commands} from "./classes/Commands";
 import {Whitelist} from "./classes/Whitelist";
-import {Guild} from "./classes/Guild";
+import {GuildHandler} from "./classes/GuildHandler";
+import {WatchlistHandler} from "./classes/WatchlistHandler";
 
 /**
  * Loading in npm packages file
@@ -27,8 +28,7 @@ const
 	client = new Discord.Client(),
 	bot = new Bot(client),
 	words = new Wordlist(),
-	allowed = new Whitelist(),
-	config = require('../config.json');
+	allowed = new Whitelist()
 
 /**
  * Do things when bot is ready
@@ -52,7 +52,7 @@ client.on("ready", async () => {
  */
 
 client.on("guildCreate", (server) => {
-	let guild = new Guild();
+	let guild = new GuildHandler();
 	guild.addServer(server.id, server.name);
 	server.createRole({
 		name: "Weeaboo",
@@ -84,7 +84,13 @@ client.on("message", (msg) => {
  */
 
 client.on("userUpdate", (oldUser, newUser) => {
-
+	let watchlistHandler = new WatchlistHandler();
+	watchlistHandler.updateUsername(newUser.id, newUser.name).then((response) => {
+		console.log(newUser);
+		console.log(response);
+	}, (err) => {
+		console.log(err);
+	})
 });
 
 /**
@@ -92,11 +98,16 @@ client.on("userUpdate", (oldUser, newUser) => {
  */
 
 client.on("guildUpdate", (oldServer, newServer) => {
-
+	let guildHandler = new GuildHandler();
+	guildHandler.updateServerName(newServer.id, newServer.name).then((result) => {
+		console.log(result);
+	}, (err) => {
+		console.log(err);
+	})
 });
 
 /**
- * Do things when a mesaage gets updated
+ * Do things when a message gets updated
  */
 
 client.on("messageUpdate", (oldMessage, newMessage) => {

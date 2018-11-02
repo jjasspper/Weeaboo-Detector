@@ -11,10 +11,38 @@ export interface ServerInfo {
 	banLimit: number
 }
 
-export class Guild extends Api {
+export class GuildHandler extends Api {
 
 	apiUri: string;
 	request: any;
+
+	/**
+	 * Updates a guild name
+	 *
+	 * @param serverID
+	 * @param serverName
+	 */
+
+	updateServerName(serverID, serverName) {
+		return new Promise((resolve, reject) => {
+			this.request({
+				method: 'PUT',
+				uri: this.apiUri + "/servers/update/name",
+				json: true,
+				body: {
+					"serverID": serverID,
+					"name": serverName
+				}
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log(serverName);
+					resolve(data);
+				}
+			});
+		});
+	}
 
 	/**
 	 * Registers the server assigned role to the database
@@ -65,7 +93,7 @@ export class Guild extends Api {
 					permissions: 0x400,
 					mentionable: true
 				}).then((role) => {
-					let guild = new Guild();
+					let guild = new GuildHandler();
 					guild.registerRole(role.id, msg.guild.id).then((response) => {
 						Message.sendApiResponse(response, msg.channel);
 						resolve(role.id);
@@ -233,7 +261,7 @@ export class Guild extends Api {
 	 * @return boolean
 	 */
 
-	userIsAdmin(userID, channel) {
+	static userIsAdmin(userID, channel) {
 		return channel.permissionsFor(userID).has("ADMINISTRATOR");
 	}
 }

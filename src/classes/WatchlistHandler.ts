@@ -1,9 +1,9 @@
 import {Api} from "./api/Api";
-import {Guild} from "./Guild";
+import {GuildHandler} from "./GuildHandler";
 import {Message} from "./Message";
 import {IServerData} from "../interfaces/IServerData";
 
-export class Watchlist extends Api {
+export class WatchlistHandler extends Api {
 
 	/**
 	 * Adds a user to the watchlist
@@ -38,14 +38,29 @@ export class Watchlist extends Api {
 
 	/**
 	 * Updates a username
-	 *@todo
-	 * @param serverID
+	 *
 	 * @param userID
 	 * @param newName
 	 */
 
-	updateUsername(serverID, userID, newName) {
-
+	updateUsername(userID, newName) {
+		return new Promise((resolve, reject) => {
+			this.request({
+				method: 'PUT',
+				uri: this.apiUri + "/watchlist/users/updatename",
+				json: true,
+				body: {
+					"userID": userID,
+					"userName": newName
+				}
+			}, (err, response, data) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(data);
+				}
+			})
+		});
 	}
 
 	/**
@@ -108,8 +123,8 @@ export class Watchlist extends Api {
 	 */
 
 	static checkWeebLevel(serverID, userID, saidBlockedWords, finalLevel, message) {
-		let guild = new Guild();
-		let watchlist = new Watchlist();
+		let guild = new GuildHandler();
+		let watchlist = new WatchlistHandler();
 		let serverLimits;
 		let user;
 
@@ -127,7 +142,7 @@ export class Watchlist extends Api {
 						const member = message.guild.members.get(userID);
 						switch (true) {
 							case user.level >= serverLimits[0] && user.level < serverLimits[1]:
-								const guild = new Guild();
+								const guild = new GuildHandler();
 								guild.getServer(message.guild.id).then((result: IServerData) => {
 									guild.roleExistsOrGenerate(message, result.generated_role_id.toString()).then((roleID) => {
 										if (!member.roles.has(roleID)) {

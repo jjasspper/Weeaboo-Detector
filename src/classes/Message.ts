@@ -1,4 +1,4 @@
-import {Watchlist} from "./Watchlist";
+import {WatchlistHandler} from "./WatchlistHandler";
 
 interface Data {
 	success: boolean;
@@ -60,7 +60,7 @@ export class Message {
 	 */
 
 	checkForWeebShit(wordlist: any, whitelist: any): void {
-		const watchlist = new Watchlist();
+		const watchlist = new WatchlistHandler();
 		const sendWordsArray = this.message.content.split(" ");
 
 		let finalLevel: number = 0;
@@ -103,7 +103,7 @@ export class Message {
 				if (sendWordsArrayLength === 0) {
 					if (finalLevel > 0) {
 						watchlist.saveUser(this.message.guild.id, this.message.author.id, finalLevel, this.message.author.username).then(() => {
-							Watchlist.checkWeebLevel(this.message.guild.id, this.message.author.id, saidBlockedWords.join(', '), finalLevel, this.message);
+							WatchlistHandler.checkWeebLevel(this.message.guild.id, this.message.author.id, saidBlockedWords.join(', '), finalLevel, this.message);
 						}, (err) => {
 							Message.send(`Something went wrong. Error: ${err}`, this.message.channel);
 						});
