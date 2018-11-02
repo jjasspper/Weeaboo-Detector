@@ -23,7 +23,7 @@ export class Commands extends Bot {
 			const firstParam = allWordsInMessage[1];
 			const secondParam = allWordsInMessage[2];
 			const thirdParam = allWordsInMessage[3];
-			const senderIsAdmin = guild.userIsAdmin(msg.author.id, msg.channel);
+			const senderIsAdmin = GuildHandler.userIsAdmin(msg.author.id, msg.channel);
 
 			switch (true) {
 				case firstParam === "info":

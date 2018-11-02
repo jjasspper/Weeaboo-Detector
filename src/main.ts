@@ -85,7 +85,7 @@ client.on("message", (msg) => {
 
 client.on("userUpdate", (oldUser, newUser) => {
 	let watchlistHandler = new WatchlistHandler();
-	watchlistHandler.updateUsername(newUser.id, newUser.name).then((response) => {
+	watchlistHandler.updateUsername(newUser.id, newUser.username).then((response) => {
 		console.log(newUser);
 		console.log(response);
 	}, (err) => {

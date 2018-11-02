@@ -13,7 +13,7 @@ export class Message {
 
 	constructor(message) {
 		this.message = message;
-		this.gluedContent = this.message.content.replace(/\s+/g, '');
+		this.gluedContent = Message.stipWord(this.message.content.replace(/\s+/g, ''));
 	}
 
 	/**
@@ -53,6 +53,24 @@ export class Message {
 	}
 
 	/**
+	 * Removes all duplicate letters from a string
+	 *
+	 * @param str
+	 */
+
+	static stipWord(str) {
+		let result = "";
+
+		for (let i = 0; i < str.length; i++) {
+			result = result + str[i];
+			while (i < str.length + 2 && str[i] == str[i + 1]) {
+				i++;
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * Checks if a message contains weeab stuff. Runs every time a chat message is sent.
 	 *
 	 * @param wordlist
@@ -62,9 +80,8 @@ export class Message {
 	checkForWeebShit(wordlist: any, whitelist: any): void {
 		const watchlist = new WatchlistHandler();
 		const sendWordsArray = this.message.content.split(" ");
-
-		let finalLevel: number = 0;
 		let sendWordsArrayLength = sendWordsArray.length;
+		let finalLevel: number = 0;
 
 		// Heavy loop
 		mainLoop:
@@ -78,7 +95,7 @@ export class Message {
 					let blockedWord: string = blockedWordObj.word;
 					let blockedWordLevel: number = blockedWordObj.level;
 
-					let sendWord: string = sendWordsArray[sendWordsArrayLength];
+					let sendWord: string = Message.stipWord(sendWordsArray[sendWordsArrayLength]);
 					let whitelistLength = whitelist.length;
 
 					while (whitelistLength--) {
