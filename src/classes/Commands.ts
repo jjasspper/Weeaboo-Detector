@@ -49,9 +49,9 @@ export class Commands extends Bot {
 					`)
 					.addField("info", `Lists info of this bot`)
 					.addField("whitelist add/remove {@user}", `Exludes a server member of being tracked by this bot. All previous stats will remain saved.`)
-					.addField("update mutelimit {number}", `Updates the maximum level a server member can have before being muted.`)
-					.addField("update kicklimit {number}", `Updates the maximum level a server member can have before being kicked.`)
-					.addField("update banlimit {number}", `Updates the maximum level a server member can have before being banned.`)
+					.addField("update mutelimit {number}", `Updates the maximum level a server member can have before being assigned the weeaboo rank. Default: 20.`)
+					.addField("update kicklimit {number}", `Updates the maximum level a server member can have before being kicked. Default: 35.`)
+					.addField("update banlimit {number}", `Updates the maximum level a server member can have before being banned. Default: 50.`)
 					.addField("weeblevel {@user}", `Gets the weeblevel of the mentioned server member. Only the first mention will be used.`)
 					.setFooter("© JVH 2018")
 					.setThumbnail(this.client.user.avatarURL);
