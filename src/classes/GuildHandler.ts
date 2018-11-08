@@ -136,7 +136,7 @@ export class GuildHandler extends Api {
 	 * @param id
 	 */
 
-	getServer(id) {
+	async getServer(id) {
 		return new Promise((resolve, reject) => {
 			this.request({
 				method: 'GET',
