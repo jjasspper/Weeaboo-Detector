@@ -12,6 +12,7 @@ import {WatchlistHandler} from "./classes/WatchlistHandler";
 
 require('dotenv').config();
 const Discord = require("discord.js");
+const cron = require("node-cron");
 
 /**
  * Variables that will store a wordlist
@@ -28,7 +29,7 @@ const
 	client = new Discord.Client(),
 	bot = new Bot(client),
 	words = new Wordlist(),
-	allowed = new Whitelist()
+	allowed = new Whitelist();
 
 /**
  * Do things when bot is ready
@@ -45,6 +46,18 @@ client.on("ready", async () => {
 	} catch (e) {
 		throw new Error(e);
 	}
+});
+
+/**
+ * Cron jobs
+ */
+
+cron.schedule("* * * * *", () => {
+	console.log("Running task every minute");
+	wordlist = words.retrieve();
+	console.log('Wordlist imported.');
+	whitelist = allowed.retrieve();
+	console.log('Whitelist imported.');
 });
 
 /**
@@ -114,7 +127,6 @@ client.on("messageUpdate", (oldMessage, newMessage) => {
 	const message = new Message(newMessage);
 	message.parse(wordlist, whitelist);
 });
-
 
 /**
  * Logging in to Discord
