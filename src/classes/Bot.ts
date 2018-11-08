@@ -12,7 +12,7 @@ export class Bot {
 		this.syncGuilds();
 
 		this.client.user.setActivity("with weebs");
-		this.client.user.setUsername("Weeabo Detector");
+		this.client.user.setUsername("Weeaboo Detector");
 
 		console.log("--------------------------------------------------------------");
 		console.log("Weeaboo Detector enabled, watch your mouth filthy man-childs!");
