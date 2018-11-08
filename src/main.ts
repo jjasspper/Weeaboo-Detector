@@ -52,7 +52,7 @@ client.on("ready", async () => {
  * Cron jobs
  */
 
-cron.schedule("* * * * *", () => {
+cron.schedule("* * */23 * *", () => {
 	console.log("Running task every minute");
 	wordlist = words.retrieve();
 	console.log('Wordlist imported.');
