@@ -156,15 +156,29 @@ export class WatchlistHandler extends Api {
 								});
 								break;
 							case user.level >= serverLimits[1] && user.level < serverLimits[2]:
-								member.kick('You are slowly turning into a weeaboo, we had to take precautions.');
+								member.kick('You are slowly turning into a weeaboo, we had to take precautions.').then((result) => {
+									console.log("Kicked member:");
+									console.log(result);
+								}, (err) => {
+									console.log("Error in kick:");
+									console.log(err);
+									Message.send("Failed to kick user.", message.channel);
+								});
 								Message.send(`User: <@${userID}> has reached a dangerous weeb-level. For your mental stability it has been kicked from this server, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 								break;
 							case user.level >= serverLimits[2] :
-								member.ban(["Your weeb-levels have risen to an unbelievable height. For the servers' sake you have been banned."]);
+								member.ban(["Your weeb-levels have risen to an unbelievable height. For the servers' sake you have been banned."]).then((result) => {
+									console.log("Banned member:");
+									console.log(result);
+								}, (err) => {
+									console.log("Error in ban:");
+									console.log(err);
+									Message.send("Failed to ban user.", message.channel);
+								});;
 								Message.send(`User: <@${userID}> has completely lost it and went full weeb-mode. To prevent further sickness to spread this user has been banned, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 								break;
 							default :
-								Message.send(`Possible weeaboo detected! User: <@${userID}> weeb-level has been incremented by ${finalLevel}, for saying the word(s): ${saidBlockedWords}.`, message.channel);
+								Message.send(`Possible weeaboo detected! The weeb-level of user <@${userID}> has been incremented by ${finalLevel}, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 						}
 					}, (err) => {
 						console.log(err);
