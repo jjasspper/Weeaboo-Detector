@@ -73,6 +73,7 @@ client.on("guildCreate", (server) => {
 		permissions: 0x400,
 		mentionable: true
 	}).then((role) => {
+		console.log("Registered role:");
 		console.log(role);
 		guild.registerRole(role.id, server.id);
 	});
@@ -99,7 +100,7 @@ client.on("message", (msg) => {
 client.on("userUpdate", (oldUser, newUser) => {
 	let watchlistHandler = new WatchlistHandler();
 	watchlistHandler.updateUsername(newUser.id, newUser.username).then((response) => {
-		console.log(newUser);
+		console.log("User update:");
 		console.log(response);
 	}, (err) => {
 		console.log(err);
@@ -113,6 +114,7 @@ client.on("userUpdate", (oldUser, newUser) => {
 client.on("guildUpdate", (oldServer, newServer) => {
 	let guildHandler = new GuildHandler();
 	guildHandler.updateServerName(newServer.id, newServer.name).then((result) => {
+		console.log("Guild update:");
 		console.log(result);
 	}, (err) => {
 		console.log(err);
