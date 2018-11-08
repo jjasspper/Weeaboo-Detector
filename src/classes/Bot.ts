@@ -41,6 +41,7 @@ export class Bot {
 			const guild = data;
 
 			guildHandler.getServer(guild.id).then((result) => {
+				console.log(counter + " guild(s) synchronised!");
 				if (typeof result == 'undefined') {
 					guildHandler.addServer(guild.id, guild.name).then((result) => {
 						console.log("New guild added.");
@@ -51,13 +52,11 @@ export class Bot {
 					});
 				} else {
 					counter++;
-					return;
 				}
 			}, (err) => {
 				console.log(err);
 				process.exit();
 			});
 		});
-		console.log(counter + " guild(s) synchronised!");
 	}
 }
