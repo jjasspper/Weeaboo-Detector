@@ -174,7 +174,7 @@ export class WatchlistHandler extends Api {
 									console.log("Error in ban:");
 									console.log(err);
 									Message.send("Failed to ban user.", message.channel);
-								});;
+								});
 								Message.send(`User: <@${userID}> has completely lost it and went full weeb-mode. To prevent further sickness to spread this user has been banned, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 								break;
 							default :
