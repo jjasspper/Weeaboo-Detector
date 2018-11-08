@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"removeComments": true,
+		"sourceMap": true,
+		"outDir": "dist",
+		"lib": [
+			"es6"
+		]
+	},
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules"
+	]
+}

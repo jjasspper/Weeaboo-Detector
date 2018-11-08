@@ -3,16 +3,20 @@
 	"version": "0.3.1a",
 	"repository": "https://github.com/jjasspper/Weeaboo-Detector",
 	"description": "Detects weeaboos and gives them what they deserve.",
-	"main": "index.js",
 	"author": "jjasspper",
 	"license": "ISC",
+	"main": "src/main.ts",
+	"types": "node_modules/discord.js/index.d.ts",
 	"scripts": {
-		"start": "node index"
+		"start": "node dist/main"
 	},
 	"dependencies": {
+		"@types/node": "^10.3.2",
 		"discord.js": "^11.3.2",
-		"dotenv": "^5.0.1",
-		"npm": "^5.10.0",
-		"request": "^2.87.0"
+		"dotenv": "^6.0.0",
+		"node-cron": "^2.0.3",
+		"npm": "^6.1.0",
+		"request": "^2.87.0",
+		"typescript": "^2.9.1"
 	}
 }
