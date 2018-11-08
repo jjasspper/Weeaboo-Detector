@@ -122,7 +122,7 @@ export class WatchlistHandler extends Api {
 	 * @param message
 	 */
 
-	static checkWeebLevel(serverID, userID, saidBlockedWords, finalLevel, message) {
+	static handleUser(serverID, userID, saidBlockedWords, finalLevel, message) {
 		let guild = new GuildHandler();
 		let watchlist = new WatchlistHandler();
 		let serverLimits;

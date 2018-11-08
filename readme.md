@@ -1,5 +1,10 @@
-[![buddy pipeline](https://app.buddy.works/jaspervanhienen/weeaboo-detector/pipelines/pipeline/139897/badge.svg?token=bc8e03408a7a0064dfcfded23c7045048377aa1bc2e31545b9be4186a37246a9 "buddy pipeline")](https://app.buddy.works/jaspervanhienen/weeaboo-detector/pipelines/pipeline/139897)
-
 ## Weeaboo-Detector (Discord bot)
 
-This repository contains the scource files of this bot.
+This repository contains the scource files of this bot. Feel free to look around.
+
+**Official website:** [weeabot.jaspervanhienen.com](https://weeabot.jaspervanhienen.com/)
+
+**Found a bug? Please report it** [here](https://github.com/jjasspper/Weeaboo-Detector/issues)**.**
+
+I am aware that some code is quite messy. I am aware of this, and I will change it in the near future.
+Because this is a project that I maintain in my free time, it might take some time to fix. If you would like to collaborate on this project, feel free to do so.

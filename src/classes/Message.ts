@@ -1,11 +1,5 @@
 import {WatchlistHandler} from "./WatchlistHandler";
 
-interface Data {
-	success: boolean;
-	message: string;
-	errorCode: null | number;
-}
-
 export class Message {
 	readonly message: any;
 	private author: any;
@@ -13,7 +7,7 @@ export class Message {
 
 	constructor(message) {
 		this.message = message;
-		this.gluedContent = Message.stipWord(this.message.content.replace(/\s+/g, ''));
+		this.gluedContent = Message.stripWord(this.message.content.replace(/\s+/g, ''));
 	}
 
 	/**
@@ -58,7 +52,7 @@ export class Message {
 	 * @param str
 	 */
 
-	static stipWord(str) {
+	static stripWord(str) {
 		let result = "";
 
 		for (let i = 0; i < str.length; i++) {
@@ -77,7 +71,7 @@ export class Message {
 	 * @param whitelist
 	 */
 
-	checkForWeebShit(wordlist: any, whitelist: any): void {
+	parse(wordlist: any, whitelist: any): void {
 		const watchlist = new WatchlistHandler();
 		const sendWordsArray = this.message.content.split(" ");
 		let sendWordsArrayLength = sendWordsArray.length;
@@ -86,32 +80,32 @@ export class Message {
 		// Heavy loop
 		mainLoop:
 			while (sendWordsArrayLength--) {
-
-				let wordlistLength = wordlist.length;
+				let wordlistIndex = wordlist.length;
 				let saidBlockedWords = [];
 
-				while (wordlistLength--) {
-					let blockedWordObj = wordlist[wordlistLength];
+				while (wordlistIndex--) {
+					let blockedWordObj = wordlist[wordlistIndex];
 					let blockedWord: string = blockedWordObj.word;
 					let blockedWordLevel: number = blockedWordObj.level;
 
-					let sendWord: string = Message.stipWord(sendWordsArray[sendWordsArrayLength]);
+					let sendWord: string = sendWordsArray[sendWordsArrayLength];
+					let strippedWord: string = Message.stripWord(sendWordsArray[sendWordsArrayLength]);
 					let whitelistLength = whitelist.length;
 
 					while (whitelistLength--) {
 						let item = whitelist[whitelistLength];
 						let listedWord = item.word;
 
-						if (sendWord.length > listedWord.length) {
+						if (sendWord.length > listedWord.length || strippedWord.length > listedWord.length) {
 							continue;
 						}
 
-						if (sendWord.includes(listedWord)) {
+						if (sendWord.includes(listedWord) || strippedWord.includes(listedWord)) {
 							continue mainLoop;
 						}
 					}
 
-					if (sendWord.includes(blockedWord) || this.gluedContent.includes(blockedWord)) {
+					if (sendWord.includes(blockedWord) || this.gluedContent.includes(blockedWord) || strippedWord.includes(blockedWord)) {
 						finalLevel += blockedWordLevel;
 						saidBlockedWords.push(blockedWord)
 					}
@@ -120,7 +114,7 @@ export class Message {
 				if (sendWordsArrayLength === 0) {
 					if (finalLevel > 0) {
 						watchlist.saveUser(this.message.guild.id, this.message.author.id, finalLevel, this.message.author.username).then(() => {
-							WatchlistHandler.checkWeebLevel(this.message.guild.id, this.message.author.id, saidBlockedWords.join(', '), finalLevel, this.message);
+							WatchlistHandler.handleUser(this.message.guild.id, this.message.author.id, saidBlockedWords.join(', '), finalLevel, this.message);
 						}, (err) => {
 							Message.send(`Something went wrong. Error: ${err}`, this.message.channel);
 						});
