@@ -49,7 +49,7 @@ export class Commands extends Bot {
 					`)
 					.addField("info", `Lists info of this bot`)
 					.addField("whitelist add/remove {@user}", `Exludes a server member of being tracked by this bot. All previous stats will remain saved.`)
-					.addField("update mutelimit {number}", `Updates the maximum level a server member can have before being assigned the weeaboo rank. Default: 20.`)
+					.addField("update ranklimit {number}", `Updates the maximum level a server member can have before being assigned the weeaboo rank. Default: 20.`)
 					.addField("update kicklimit {number}", `Updates the maximum level a server member can have before being kicked. Default: 35.`)
 					.addField("update banlimit {number}", `Updates the maximum level a server member can have before being banned. Default: 50.`)
 					.addField("weeblevel {@user}", `Gets the weeblevel of the mentioned server member. Only the first mention will be used.`)
@@ -61,7 +61,7 @@ export class Commands extends Bot {
 					if (senderIsAdmin) {
 						let level: number = parseInt(thirdParam);
 						switch (true) {
-							case secondParam === "mutelimit":
+							case secondParam === "ranklimit":
 								if (level > 0 && level < 999) {
 									guild.updateMaxMuteLevel(msg.guild.id, level).then((result: any) => {
 										Message.sendApiResponse(result, msg.channel);
