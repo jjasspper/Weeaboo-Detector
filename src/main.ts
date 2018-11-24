@@ -76,6 +76,8 @@ client.on("guildCreate", (server) => {
 		console.log("Registered role:");
 		console.log(role);
 		guild.registerRole(role.id, server.id);
+	}).catch((err) => {
+		console.log(`Could not create rank for server ${server.id}`);
 	});
 });
 
@@ -102,9 +104,9 @@ client.on("userUpdate", (oldUser, newUser) => {
 	watchlistHandler.updateUsername(newUser.id, newUser.username).then((response) => {
 		console.log("User update:");
 		console.log(response);
-	}, (err) => {
+	}).catch((err) => {
 		console.log(err);
-	})
+	});
 });
 
 /**
@@ -116,9 +118,9 @@ client.on("guildUpdate", (oldServer, newServer) => {
 	guildHandler.updateServerName(newServer.id, newServer.name).then((result) => {
 		console.log("Guild update:");
 		console.log(result);
-	}, (err) => {
+	}).catch((err) => {
 		console.log(err);
-	})
+	});
 });
 
 /**

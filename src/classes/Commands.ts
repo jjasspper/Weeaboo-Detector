@@ -158,7 +158,6 @@ export class Commands extends Bot {
 					Message.send("Command not found, use '!weeabot commands' to list all commands.", msg.channel);
 					break;
 			}
-
 			return;
 		}
 	}

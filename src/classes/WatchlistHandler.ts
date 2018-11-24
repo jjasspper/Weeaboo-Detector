@@ -150,8 +150,10 @@ export class WatchlistHandler extends Api {
 										}
 										Message.send(`Weeaboo detected! User: <@${userID}> weeb-level has been incremented by ${finalLevel}, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 										member.addRole(roleID);
-									}, (error) => {
-										Message.send(`An error occurred: ${error}`, message.channel);
+									}).catch((err) => {
+										console.log(`Error in assigning rank`);
+										console.log(err);
+										Message.send(`Failed to assign role to a user. Please check that the bot has permissions te generate a role.`, message.channel);
 									});
 								});
 								break;
@@ -159,10 +161,10 @@ export class WatchlistHandler extends Api {
 								member.kick('You are slowly turning into a weeaboo, we had to take precautions.').then((result) => {
 									console.log("Kicked member:");
 									console.log(result);
-								}, (err) => {
+								}).catch((err) => {
 									console.log("Error in kick:");
 									console.log(err);
-									Message.send("Failed to kick user.", message.channel);
+									Message.send(`Failed to kick user ${member.username}. Please check if the bot has the right permissions! If you do not wish that user can be kicked, please whitelist the user by using !weeabot whitelist add '@user'.`, message.channel);
 								});
 								Message.send(`User: <@${userID}> has reached a dangerous weeb-level. For your mental stability it has been kicked from this server, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 								break;
@@ -170,12 +172,12 @@ export class WatchlistHandler extends Api {
 								member.ban(["Your weeb-levels have risen to an unbelievable height. For the servers' sake you have been banned."]).then((result) => {
 									console.log("Banned member:");
 									console.log(result);
-								}, (err) => {
+									Message.send(`User: <@${userID}> has completely lost it and went full weeb-mode. To prevent further sickness to spread this user has been banned, for saying the word(s): ${saidBlockedWords}.`, message.channel);
+								}).catch((err) => {
 									console.log("Error in ban:");
 									console.log(err);
-									Message.send("Failed to ban user.", message.channel);
+									Message.send(`Failed to ban user ${member.username}. Please check if the bot has the right permissions! If you do not wish that user can be banned, please whitelist the user by using !weeabot whitelist add '@user'.`, message.channel);
 								});
-								Message.send(`User: <@${userID}> has completely lost it and went full weeb-mode. To prevent further sickness to spread this user has been banned, for saying the word(s): ${saidBlockedWords}.`, message.channel);
 								break;
 							default :
 								Message.send(`Possible weeaboo detected! The weeb-level of user <@${userID}> has been incremented by ${finalLevel}, for saying the word(s): ${saidBlockedWords}.`, message.channel);
