@@ -76,6 +76,8 @@ client.on("guildCreate", (server) => {
 		console.log("Registered role:");
 		console.log(role);
 		guild.registerRole(role.id, server.id);
+	}).catch((err) => {
+		console.log(`Could not create rank for server ${server.id}`);
 	});
 });
 
