@@ -32,16 +32,19 @@ export class Bot {
 	 */
 
 	syncGuilds() {
-		console.log("Synchronising guilds...");
-		const guildCollection = this.client.guilds;
+		const guildCollection = this.client.guilds.array();
 		const guildHandler = new GuildHandler();
+
+		//Used for logging
 		let counter = 1;
+		let i = 0;
 
-		guildCollection.forEach((data) => {
-			const guild = data;
+		console.log(`Synchronising ${guildCollection.length} guilds...`);
 
+		let interval = setInterval(() => {
+			const guild = guildCollection[i];
 			guildHandler.getServer(guild.id).then((result) => {
-				console.log(counter + " guild(s) synchronised!");
+				console.log(`${counter} guild(s) synchronised!`);
 				if (typeof result == 'undefined') {
 					guildHandler.addServer(guild.id, guild.name).then((result) => {
 						console.log("New guild added.");
@@ -54,9 +57,22 @@ export class Bot {
 					counter++;
 				}
 			}, (err) => {
+				console.log("Error while synchronising servers:");
 				console.log(err);
 				process.exit();
 			});
-		});
+
+			if (i == guildCollection.length - 1) {
+				clearInterval(interval);
+			}
+
+			i++;
+		}, 500);
+	}
+
+	private setAsyncTimeout(f) {
+		setTimeout(() => {
+			f();
+		}, 500);
 	}
 }
